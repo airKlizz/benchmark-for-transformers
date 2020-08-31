@@ -1,0 +1,32 @@
+{
+    "scenarios": [
+        {
+            "name": "Version1",
+            "model_class": "ordering",
+            "model_name": "to/fill",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    
+                }
+            },
+            "batch_size": 1
+        }
+    ],
+    "dataset": {
+        "dataset_name": "datasets/arxiv_ordering.py",
+        "split": "test[:10]",
+        "x_column_name": ["shuffled_sentences"],
+        "y_column_name": "label"
+    },
+    "metrics": [
+        {
+            "metric_name": "metrics/kendalltau.py",
+            "values": ["kendalltau"]
+        },
+        {
+            "metric_name": "metrics/pmr.py",
+            "values": ["pmr"]
+        }
+    ]
+}

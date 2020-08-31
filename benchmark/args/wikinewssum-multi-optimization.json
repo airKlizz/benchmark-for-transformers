@@ -1,0 +1,116 @@
+{
+    "scenarios": [
+	    {
+            "name": "Distilbart 12-6 num_beams 1 w/o quantization",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-12-6-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 1,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1
+        },
+        {
+            "name": "Distilbart 12-6 num_beams 4 w/o quantization",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-12-6-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1
+        },
+        {
+            "name": "Distilbart 12-6 num_beams 10 w/o quantization",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-12-6-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 10,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1
+        },
+        {
+            "name": "Distilbart 12-6 num_beams 1 with quantization",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-12-6-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 1,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1,
+            "quantization": "dynamic"
+        },
+        {
+            "name": "Distilbart 12-6 num_beams 4 with quantization",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-12-6-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1,
+            "quantization": "dynamic"
+        },
+        {
+            "name": "Distilbart 12-6 num_beams 10 with quantization",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-12-6-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 10,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1,
+            "quantization": "dynamic"
+        }
+    ],
+    "dataset": {
+        "dataset_name": "datasets/wikinewssum-multi.py",
+        "split": "test",
+        "x_column_name": ["document"],
+        "y_column_name": "summary"
+    },
+    "metrics": [
+        {
+            "metric_name": "rouge",
+            "values": ["rouge1", "rouge2", "rougeL"],
+            "run_kwargs": {"rouge_types": ["rouge1", "rouge2", "rougeL"]}
+       }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "scenarios": [
+        {
+            "name": "albert",
+            "model_class": "ner",
+            "model_name": "KB/albert-base-v2-ner",
+            "batch_size": 1
+        },
+        {
+            "name": "bert",
+            "model_class": "ner",
+            "model_name": "dslim/bert-base-NER",
+            "batch_size": 1
+        }
+    ],
+    "dataset": {
+        "dataset_name": "wnut_17",
+        "split": "validation[:20]",
+        "x_column_name": ["tokens"],
+        "y_column_name": "labels"
+    },
+    "metrics": [
+        {
+            "metric_name": "seqeval",
+            "values": ["precision", "recall", "f1", "accuracy"]
+        }
+    ]
+}

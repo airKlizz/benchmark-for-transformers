@@ -1,0 +1,155 @@
+{
+    "scenarios": [
+        {
+            "name": "T5",
+            "model_class": "summarization",
+            "model_name": "airKlizz/t5-base-multi-combine-wiki-news",
+            "tokenizer_name": "t5-base",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                },
+                "prefix": "summarize: "
+            },
+            "batch_size": 1,
+	    "device": "cuda"
+        },
+        {
+            "name": "T5-small",
+            "model_class": "summarization",
+            "model_name": "airKlizz/t5-small-multi-combine-wiki-news",
+            "tokenizer_name": "t5-small",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                },
+                "prefix": "summarize: "
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "Bart",
+            "model_class": "summarization",
+            "model_name": "airKlizz/bart-large-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+	    {
+            "name": "Distilbart 12-6",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-12-6-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "Distilbart 12-3",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-12-3-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+	    {
+            "name": "Distilbart 6-12",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-6-12-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+	    {
+            "name": "Distilbart 6-6",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-6-6-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+	    {
+            "name": "Distilbart 3-3",
+            "model_class": "summarization",
+            "model_name": "airKlizz/distilbart-3-3-multi-combine-wiki-news",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 2.0,
+                    "min_length": 150,
+                    "max_length": 400,
+                    "early_stopping": true
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        }
+    ],
+    "dataset": {
+        "dataset_name": "datasets/wikinewssum-multi.py",
+        "split": "test",
+        "x_column_name": ["document"],
+        "y_column_name": "summary"
+    },
+    "metrics": [
+        {
+            "metric_name": "rouge",
+            "values": ["rouge1", "rouge2", "rougeL"],
+            "run_kwargs": {"rouge_types": ["rouge1", "rouge2", "rougeL"]}
+       }
+    ]
+}
