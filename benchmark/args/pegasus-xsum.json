@@ -17,7 +17,7 @@
             "device": "cuda"
         },
         {
-            "name": "student pegasus",
+            "name": "student pegasus 16-8",
             "model_class": "summarization",
             "model_name": "sshleifer/student_pegasus_xsum_16_8",
             "tokenizer_name": "google/pegasus-xsum",
@@ -33,7 +33,7 @@
             "device": "cuda"
         },
         {
-            "name": "student pegasus",
+            "name": "student pegasus 16-4",
             "model_class": "summarization",
             "model_name": "sshleifer/student_pegasus_xsum_16_4",
             "tokenizer_name": "google/pegasus-xsum",
