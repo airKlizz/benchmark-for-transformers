@@ -137,6 +137,9 @@ class Benchmark(object):
             data = json.load(f)
         return cls.from_dict(data)
 
+    def reset_scenarios(self):
+        self.scenarios = []
+
     def add_scenario(
         self,
         name: str,
