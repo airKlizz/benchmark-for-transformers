@@ -145,7 +145,7 @@ class Benchmark(object):
         tokenizer_name: Union[None, str] = None,
         init_kwargs: Union[None, Dict] = None,
         batch_size: int = 1,
-        device: str = "cpu"
+        device: str = "cpu",
         quantization: Union[None, str] = None,
     ):
         self.scenarios.append(
