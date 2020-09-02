@@ -1,0 +1,289 @@
+{
+    "scenarios": [
+        {
+            "name": "facebook bart-large",
+            "model_class": "summarization",
+            "model_name": "facebook/bart-large-xsum",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart 12-6",
+            "model_class": "summarization",
+            "model_name": "sshleifer/distilbart-xsum-12-6",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart 12-3",
+            "model_class": "summarization",
+            "model_name": "sshleifer/distilbart-xsum-12-3",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart 12-1",
+            "model_class": "summarization",
+            "model_name": "sshleifer/distilbart-xsum-12-1",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart 9-6",
+            "model_class": "summarization",
+            "model_name": "sshleifer/distilbart-xsum-9-6",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart 6-6",
+            "model_class": "summarization",
+            "model_name": "sshleifer/distilbart-xsum-6-6",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart 1-1",
+            "model_class": "summarization",
+            "model_name": "sshleifer/distilbart-xsum-1-1",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 12-1",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_12_1",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 12-2",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_12_2",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 12-3",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_12_3",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 12-4",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_12_4",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 12-6",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_12_6",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 9-12",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_9_12",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 9-9",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_9_9",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 6-12",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_6_12",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 6-6",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_6_6",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "distilbart student 3-12",
+            "model_class": "summarization",
+            "model_name": "sshleifer/student_xsum_3_12",
+            "tokenizer_name": "facebook/bart-large",
+            "init_kwargs": {
+                "generation_parameters": {
+                    "num_beams": 4,
+                    "length_penalty": 0.5,
+                    "min_length": 11,
+                    "max_length": 62
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        }
+    ],
+    "dataset": {
+        "dataset_name": "xsum",
+        "split": "test[:10]",
+        "x_column_name": ["document"],
+        "y_column_name": "summary"
+    },
+    "metrics": [
+        {
+            "metric_name": "rouge",
+            "values": ["rouge1", "rouge2", "rougeL"],
+            "run_kwargs": {"rouge_types": ["rouge1", "rouge2", "rougeL"]}
+        }
+    ]
+}
