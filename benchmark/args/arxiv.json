@@ -1,7 +1,7 @@
 {
     "scenarios": [
         {
-            "name": "Version1",
+            "name": "Secenario 1",
             "model_class": "ordering",
             "model_name": "to/fill",
             "tokenizer_name": "facebook/bart-base",
