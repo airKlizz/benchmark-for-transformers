@@ -1,0 +1,51 @@
+{
+    "scenarios": [
+        {
+            "name": "bert-base dslim",
+            "model_class": "ner",
+            "model_name": "dslim/bert-base-NER",
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "bert-base dbmdz",
+            "model_class": "ner",
+            "model_name": "dbmdz/bert-base-cased-finetuned-conll03-english",
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "bert-large dbmdz",
+            "model_class": "ner",
+            "model_name": "dbmdz/bert-large-cased-finetuned-conll03-english",
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "tiny-bert-large dbmdz",
+            "model_class": "ner",
+            "model_name": "sshleifer/tiny-dbmdz-bert-large-cased-finetuned-conll03-english",
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "electra-large dbmdz",
+            "model_class": "ner",
+            "model_name": "dbmdz/electra-large-discriminator-finetuned-conll03-english",
+            "batch_size": 1,
+            "device": "cuda"
+        }
+    ],
+    "dataset": {
+        "dataset_name": "datasets/conll2013.py",
+        "split": "validation",
+        "x_column_name": ["tokens"],
+        "y_column_name": "labels"
+    },
+    "metrics": [
+        {
+            "metric_name": "seqeval",
+            "values": ["precision", "recall", "f1", "accuracy"]
+        }
+    ]
+}
