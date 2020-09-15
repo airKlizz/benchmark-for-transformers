@@ -37,7 +37,7 @@ class NerModel(Model):
                 input_ids=pt_batch["input_ids"].to(self.device),
                 attention_mask=pt_batch["attention_mask"].to(self.device),
             )
-        outputs = outputs[0].numpy().argmax(axis=-1).tolist()
+        outputs = outputs[0].cpu().numpy().argmax(axis=-1).tolist()
         outputs = [output[1:-1] for output in outputs]  # remove first and last tokens
         assert len(outputs) == len(all_tokens)
         return [self._get_predictions(all_tokens[i], outputs[i]) for i in range(len(outputs))]
