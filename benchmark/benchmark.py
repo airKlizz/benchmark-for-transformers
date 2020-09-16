@@ -273,7 +273,7 @@ class Benchmark(object):
             self.dataset.dataset, self.dataset.x_column_name, batch_size=scenario.batch_size,
         )
         stats = {
-            "# of parameters": {scenario.name: self.count_parameters(scenario.model.model)},
+            "# of parameters": {scenario.name: scenario.model.count_parameters()},
             "latency (mean)": {scenario.name: np.mean(inference_time_measures)},
             "latency (90th percentile)": {scenario.name: np.percentile(inference_time_measures, 90)},
         }
@@ -286,10 +286,3 @@ class Benchmark(object):
             for value in metric.values:
                 stats["{}_{}".format(metric.metric_name, value)] = {scenario.name: get_value(score, value)}
         return stats
-
-    @staticmethod
-    def count_parameters(model):
-        try:
-            return sum(p.numel() for p in model.parameters() if p.requires_grad)
-        except:
-            return -1 # return -1 for Onnx models

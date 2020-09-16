@@ -54,11 +54,7 @@ class NerModel(Model):
         )
 
         with torch.no_grad():
-            outputs = self.model(
-                input_ids=pt_batch["input_ids"].to(self.device),
-                attention_mask=pt_batch["attention_mask"].to(self.device),
-                token_type_ids=pt_batch["token_type_ids"].to(self.device),
-            )
+            outputs = self.model(**self.prepare_inputs(pt_batch))
         outputs = outputs[0].cpu().numpy().argmax(axis=-1).tolist()
         outputs = [output[1:-1] for output in outputs]  # remove first and last tokens
         assert len(outputs) == len(all_tokens)

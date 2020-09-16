@@ -6,7 +6,7 @@ import torch.quantization
 from onnxruntime import (GraphOptimizationLevel, InferenceSession,
                          SessionOptions, get_all_providers)
 from tqdm import tqdm
-from transformers import AutoTokenizer, AutoConfig
+from transformers import AutoConfig, AutoTokenizer
 from transformers.convert_graph_to_onnx import convert, optimize, quantize
 
 
@@ -42,6 +42,7 @@ class Model(object):
             self.model = model_cls.from_pretrained(model_name).eval().to(self.device)
             if quantization:
                 self.model = torch.quantization.quantize_dynamic(self.model, {torch.nn.Linear}, dtype=torch.qint8)
+            self.onnx_model = False
         else:
             self.model = OnnxModel(
                 model_name=model_name,
@@ -51,6 +52,7 @@ class Model(object):
                 force=True if onnx == "force" else False,
                 **onnx_convert_kwargs,
             )
+            self.onnx_model = True
 
     def predict(self, dataset, x_column_name, batch_size):
         predictions = []
@@ -79,6 +81,24 @@ class Model(object):
             raise ValueError(
                 f"The model '{self.model.__class__.__name__}' is not supported. Supported models are {supported_models}",
             )
+
+    def prepare_inputs(self, pt_batch):
+        if not self.onnx_model:
+            model_args_name = self.model.forward.__code__.co_varnames
+            model_args_name = model_args_name[1:]  # start at index 1 to skip "self" argument
+        else:
+            model_args_name = [onnx_input.name for onnx_input in self.model.session.get_inputs()]
+        prepared_inputs = {}
+        for arg_name in model_args_name:
+            if arg_name in pt_batch.keys():
+                prepared_inputs[arg_name] = pt_batch[arg_name].to(self.device)
+        return prepared_inputs
+
+    def count_parameters(self):
+        if not self.onnx_model:
+            return sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+        else:
+            return -1  # return -1 for Onnx models
 
 
 class OnnxModel(object):

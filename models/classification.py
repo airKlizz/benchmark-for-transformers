@@ -29,11 +29,13 @@ class ClassificationModel(Model):
     def _predict(self, x):
         x = x[0]
         pt_batch = self.tokenizer(
-            x, padding="longest", truncation=True, max_length=self.tokenizer.max_len, return_tensors="pt",
+            x,
+            padding="longest",
+            truncation=True,
+            max_length=self.tokenizer.max_len,
+            return_token_type_ids=True,
+            return_tensors="pt",
         )
         with torch.no_grad():
-            outputs = self.model(
-                input_ids=pt_batch["input_ids"].to(self.device),
-                attention_mask=pt_batch["attention_mask"].to(self.device),
-            )
+            outputs = self.model(**self.prepare_inputs(pt_batch))
         return outputs[0].cpu().numpy().argmax(axis=-1).tolist()
