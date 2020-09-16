@@ -1,0 +1,44 @@
+{
+    "scenarios": [
+        {
+            "name": "bert-base dslim",
+            "model_class": "ner",
+            "model_name": "dslim/bert-base-NER",
+            "batch_size": 1
+        },
+        {
+            "name": "bert-base dslim onnx",
+            "model_class": "ner",
+            "model_name": "dslim/bert-base-NER",
+            "batch_size": 1,
+            "onnx": true
+        },
+        {
+            "name": "bert-base dslim q",
+            "model_class": "ner",
+            "model_name": "dslim/bert-base-NER",
+            "batch_size": 1,
+            "quantization": true
+        },
+        {
+            "name": "bert-base dslim onnx q",
+            "model_class": "ner",
+            "model_name": "dslim/bert-base-NER",
+            "batch_size": 1,
+            "quantization": true,
+            "onnx": true
+        }
+    ],
+    "dataset": {
+        "dataset_name": "datasets/conll2013.py",
+        "split": "validation[:1000]",
+        "x_column_name": ["tokens"],
+        "y_column_name": "labels"
+    },
+    "metrics": [
+        {
+            "metric_name": "seqeval",
+            "values": ["precision", "recall", "f1", "accuracy"]
+        }
+    ]
+}

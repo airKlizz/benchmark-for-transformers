@@ -2,7 +2,7 @@ try:
     from transformers import BartForSequenceOrdering
 except:
     print(
-        "Warning: If you try to use BartForSequenceOrdering, you are using the wring python env. Please make sure to use the one with the branch bart-for-token-classification"
+        "Warning: If you try to use BartForSequenceOrdering, you are using the wring python env. Please make sure to use the good branch"
     )
 
 from .model import Model
@@ -14,9 +14,19 @@ class OrderingModel(Model):
     """
 
     def __init__(
-        self, name, model_name, tokenizer_name, device, quantization, ordering_parameters={},
+        self,
+        name,
+        model_name,
+        tokenizer_name,
+        device,
+        quantization,
+        onnx,
+        onnx_convert_kwargs,
+        ordering_parameters={},
     ):
-        super().__init__(name, BartForSequenceOrdering, model_name, tokenizer_name, device, quantization)
+        super().__init__(
+            name, BartForSequenceOrdering, model_name, tokenizer_name, device, quantization, onnx, onnx_convert_kwargs
+        )
         self.ordering_parameters = ordering_parameters
 
     def _predict(self, x):
