@@ -1,5 +1,6 @@
 import torch
-from transformers import AutoModelForTokenClassification, AutoTokenizer
+from transformers import (MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
+                          AutoModelForTokenClassification, AutoTokenizer)
 
 from .model import Model
 
@@ -17,9 +18,28 @@ class NerModel(Model):
     }
 
     def __init__(
-        self, name, model_name, tokenizer_name, device, quantization, equivalent_labels=equivalent_labels,
+        self,
+        name,
+        model_name,
+        tokenizer_name,
+        device,
+        quantization,
+        onnx,
+        onnx_convert_kwargs,
+        equivalent_labels=equivalent_labels,
     ):
-        super().__init__(name, AutoModelForTokenClassification, model_name, tokenizer_name, device, quantization)
+        super().__init__(
+            name,
+            AutoModelForTokenClassification,
+            model_name,
+            tokenizer_name,
+            device,
+            quantization,
+            onnx,
+            onnx_convert_kwargs,
+            "ner",
+        )
+        self.check_model_type(MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING)
         self.equivalent_labels = equivalent_labels
 
     def _predict(self, x):
@@ -29,6 +49,7 @@ class NerModel(Model):
             padding="longest",
             truncation=True,
             max_length=self.tokenizer.max_len,
+            return_token_type_ids=True,
             return_tensors="pt",
         )
 
@@ -36,6 +57,7 @@ class NerModel(Model):
             outputs = self.model(
                 input_ids=pt_batch["input_ids"].to(self.device),
                 attention_mask=pt_batch["attention_mask"].to(self.device),
+                token_type_ids=pt_batch["token_type_ids"].to(self.device),
             )
         outputs = outputs[0].cpu().numpy().argmax(axis=-1).tolist()
         outputs = [output[1:-1] for output in outputs]  # remove first and last tokens

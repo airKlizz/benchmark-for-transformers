@@ -19,11 +19,9 @@
 from __future__ import absolute_import, division, print_function
 
 import logging
-
-import nlp
-
 import os
 
+import nlp
 
 _CITATION = """
 """
@@ -50,9 +48,7 @@ class CoNLL_2013(nlp.GeneratorBasedBuilder):
     """The CoNLL 2013 Dataset."""
 
     BUILDER_CONFIGS = [
-        CoNLL_2013Config(
-            name="conll2013", version=nlp.Version("1.0.0"), description="The CoNLL 2013 dataset"
-        ),
+        CoNLL_2013Config(name="conll2013", version=nlp.Version("1.0.0"), description="The CoNLL 2013 dataset"),
     ]
 
     def _info(self):
@@ -75,9 +71,15 @@ class CoNLL_2013(nlp.GeneratorBasedBuilder):
         data_path = dl_manager.download_and_extract(_URL)
 
         return [
-            nlp.SplitGenerator(name=nlp.Split.TRAIN, gen_kwargs={"filepath": os.path.join(data_path, "eng.train.conll")}),
-            nlp.SplitGenerator(name=nlp.Split.VALIDATION, gen_kwargs={"filepath": os.path.join(data_path, "eng.testa.conll")}),
-            nlp.SplitGenerator(name=nlp.Split.TEST, gen_kwargs={"filepath": os.path.join(data_path, "eng.testb.conll")}),
+            nlp.SplitGenerator(
+                name=nlp.Split.TRAIN, gen_kwargs={"filepath": os.path.join(data_path, "eng.train.conll")}
+            ),
+            nlp.SplitGenerator(
+                name=nlp.Split.VALIDATION, gen_kwargs={"filepath": os.path.join(data_path, "eng.testa.conll")}
+            ),
+            nlp.SplitGenerator(
+                name=nlp.Split.TEST, gen_kwargs={"filepath": os.path.join(data_path, "eng.testb.conll")}
+            ),
         ]
 
     def _generate_examples(self, filepath):
@@ -100,11 +102,7 @@ class CoNLL_2013(nlp.GeneratorBasedBuilder):
                     assert len(current_tokens) == len(current_labels), "💔 between len of tokens & labels"
                     sentence = (
                         sentence_counter,
-                        {
-                            "id": str(sentence_counter),
-                            "tokens": current_tokens,
-                            "labels": current_labels,
-                        },
+                        {"id": str(sentence_counter), "tokens": current_tokens, "labels": current_labels,},
                     )
                     sentence_counter += 1
                     current_tokens = []

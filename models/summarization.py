@@ -9,9 +9,20 @@ class SummarizationModel(Model):
     """
 
     def __init__(
-        self, name, model_name, tokenizer_name, device, quantization, generation_parameters={}, prefix="",
+        self,
+        name,
+        model_name,
+        tokenizer_name,
+        device,
+        quantization,
+        onnx,
+        onnx_convert_kwargs,
+        generation_parameters={},
+        prefix="",
     ):
-        super().__init__(name, AutoModelWithLMHead, model_name, tokenizer_name, device, quantization)
+        super().__init__(
+            name, AutoModelWithLMHead, model_name, tokenizer_name, device, quantization, onnx, onnx_convert_kwargs
+        )
         self.generation_parameters = generation_parameters
         self.prefix = prefix
 

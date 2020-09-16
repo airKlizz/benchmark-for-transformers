@@ -38,7 +38,9 @@ class Scenario:
 
     device: str = field(default="cpu")
     batch_size: int = field(default=1)
-    quantization: Union[None, str] = field(default=None)
+    quantization: bool = False
+    onnx: Union[bool, str] = field(default=False)
+    onnx_convert_kwargs: Optional[Dict] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, data):
@@ -149,7 +151,9 @@ class Benchmark(object):
         init_kwargs: Union[None, Dict] = None,
         batch_size: int = 1,
         device: str = "cpu",
-        quantization: Union[None, str] = None,
+        quantization: bool = False,
+        onnx: Union[bool, str] = False,
+        onnx_convert_kwargs: Union[None, Dict] = None,
     ):
         self.scenarios.append(
             Scenario(
@@ -161,6 +165,8 @@ class Benchmark(object):
                 batch_size=batch_size,
                 device=device,
                 quantization=quantization,
+                onnx=onnx,
+                onnx_convert_kwargs=onnx_convert_kwargs,
             )
         )
 
@@ -214,6 +220,8 @@ class Benchmark(object):
                 tokenizer_name=scenario.tokenizer_name,
                 device=scenario.device,
                 quantization=scenario.quantization,
+                onnx=scenario.onnx,
+                onnx_convert_kwargs=scenario.onnx_convert_kwargs,
                 **scenario.init_kwargs,
             )
 
@@ -281,4 +289,7 @@ class Benchmark(object):
 
     @staticmethod
     def count_parameters(model):
-        return sum(p.numel() for p in model.parameters() if p.requires_grad)
+        try:
+            return sum(p.numel() for p in model.parameters() if p.requires_grad)
+        except:
+            return -1 # return -1 for Onnx models
