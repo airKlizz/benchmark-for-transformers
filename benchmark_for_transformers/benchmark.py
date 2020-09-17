@@ -1,8 +1,11 @@
 import json
 from dataclasses import dataclass, field
+from importlib.machinery import SourceFileLoader
+from inspect import getmembers, isclass
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-import nlp
+import datasets
 import numpy as np
 import pandas as pd
 
@@ -19,6 +22,18 @@ ALL_MODEL_CLASS = {
     "ner": NerModel,
     "ordering": OrderingModel,
 }
+
+
+def get_model_class(model_class: str):
+    if model_class in ALL_MODEL_CLASS.keys():
+        return ALL_MODEL_CLASS[model_class]
+    elif Path(model_class).is_file() and model_class[-3:] == ".py":
+        module = SourceFileLoader("", model_class).load_module()
+        return [cls[1] for cls in getmembers(module, isclass) if cls[1].__bases__[0] == Model][0]
+    else:
+        raise ValueError(
+            f"model_class {model_class} must be a model class from {ALL_MODEL_CLASS} or the path to a python script."
+        )
 
 
 @dataclass
@@ -60,7 +75,7 @@ class Metric:
     values: List[str] = field()
     init_kwargs: Optional[Dict] = field(default_factory=dict)
     run_kwargs: Optional[Dict] = field(default_factory=dict)
-    metric: Union[None, nlp.Metric] = field(default=None)
+    metric: Union[None, datasets.Metric] = field(default=None)
 
     @classmethod
     def from_dict(cls, data):
@@ -78,7 +93,7 @@ class Dataset:
     x_column_name: str = field()
     y_column_name: str = field()
     init_kwargs: Optional[Dict] = field(default_factory=dict)
-    dataset: Union[None, nlp.Dataset] = field(default=None)
+    dataset: Union[None, datasets.Dataset] = field(default=None)
 
     @classmethod
     def from_dict(cls, data):
@@ -204,7 +219,7 @@ class Benchmark(object):
         if self.dataset.dataset != None and force == False:
             print("INFO: Dataset already load. Force to reload.")
             return
-        self.dataset.dataset = nlp.load_dataset(
+        self.dataset.dataset = datasets.load_dataset(
             self.dataset.dataset_name, split=self.dataset.split, **self.dataset.init_kwargs,
         )
 
@@ -215,7 +230,7 @@ class Benchmark(object):
             if metric.metric != None and force == False:
                 print("INFO: Metric already load. Force to reload.")
                 return
-            metric.metric = nlp.load_metric(metric.metric_name, **metric.init_kwargs)
+            metric.metric = datasets.load_metric(metric.metric_name, **metric.init_kwargs)
 
     def load_models(self, force=False):
         if self.scenarios == None:
@@ -224,7 +239,7 @@ class Benchmark(object):
             if scenario.model != None and force == False:
                 print(f"INFO: Model of {scenario.name} already load. Force to reload.")
                 continue
-            scenario.model = ALL_MODEL_CLASS[scenario.model_class](
+            scenario.model = get_model_class(scenario.model_class)(
                 name=scenario.name,
                 model_name=scenario.model_name,
                 tokenizer_name=scenario.tokenizer_name,
@@ -292,7 +307,7 @@ class Benchmark(object):
         references = self.dataset.dataset[self.dataset.y_column_name]
         references = scenario.model.prepare_references(references)
         for metric in self.metrics:
-            score = metric.metric.compute(predictions, references, **metric.run_kwargs,)
+            score = metric.metric.compute(predictions=predictions, references=references, **metric.run_kwargs,)
             if metric.values == None:
                 raise ValueError("No values in metric.")
             for value in metric.values:

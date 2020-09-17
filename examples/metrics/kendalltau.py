@@ -54,7 +54,10 @@ class KendallTau(datasets.Metric):
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
             features=datasets.Features(
-                {"predictions": datasets.Sequence(datasets.Value("int8")), "references": datasets.Sequence(datasets.Value("int8")),}
+                {
+                    "predictions": datasets.Sequence(datasets.Value("int8")),
+                    "references": datasets.Sequence(datasets.Value("int8")),
+                }
             ),
             codebase_urls=["https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kendalltau.html"],
             reference_urls=["https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient"],

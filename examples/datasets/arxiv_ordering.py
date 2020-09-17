@@ -71,9 +71,15 @@ class ArXivOrdering(datasets.GeneratorBasedBuilder):
         data_path = dl_manager.download_and_extract(_URL)
 
         return [
-            datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={"path": os.path.join(data_path, "train.txt")},),
-            datasets.SplitGenerator(name=datasets.Split.VALIDATION, gen_kwargs={"path": os.path.join(data_path, "valid.txt")},),
-            datasets.SplitGenerator(name=datasets.Split.TEST, gen_kwargs={"path": os.path.join(data_path, "test.txt")},),
+            datasets.SplitGenerator(
+                name=datasets.Split.TRAIN, gen_kwargs={"path": os.path.join(data_path, "train.txt")},
+            ),
+            datasets.SplitGenerator(
+                name=datasets.Split.VALIDATION, gen_kwargs={"path": os.path.join(data_path, "valid.txt")},
+            ),
+            datasets.SplitGenerator(
+                name=datasets.Split.TEST, gen_kwargs={"path": os.path.join(data_path, "test.txt")},
+            ),
         ]
 
     def _generate_examples(self, path=None):
