@@ -265,6 +265,6 @@ Some examples benchmark ``json`` files are in the [examples](/examples) folder. 
 
 In the [examples](/examples) folder, there are also subfolders containing examples of personnalized datasets and metrics scripts.
 
-## Documentation
+## More details in the documentation
 
 You can find a description of the repository, guide and examples in the [documentation](https://remi-calizzano.gitbook.io/benchmark-for-transformers/).
