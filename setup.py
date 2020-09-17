@@ -12,7 +12,7 @@ setup(
     license="MIT",
     url="https://github.com/airKlizz/benchmark-for-transformers",
     packages=find_packages(),
-    install_requires=["transformers>=3.1.0", "nlp>=0.1", "onnx", "onnxruntime"],
+    install_requires=["transformers>=3.1.0", "datasets", "onnx", "onnxruntime"],
     entry_points={"console_scripts": ["benchmark-for-transformers-run=benchmark_for_transformers.run_cli:main"]},
     python_requires=">=3.6.0",
 )

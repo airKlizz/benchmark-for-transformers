@@ -15,7 +15,7 @@
 """ Perfect Match Ratio. """
 
 import absl  # Here to have a nice missing dependency error message early on
-import nlp
+import datasets
 import nltk  # Here to have a nice missing dependency error message early on
 import numpy as np
 import six  # Here to have a nice missing dependency error message early on
@@ -40,14 +40,14 @@ Returns:
 """
 
 
-class PMR(nlp.Metric):
+class PMR(datasets.Metric):
     def _info(self):
-        return nlp.MetricInfo(
+        return datasets.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
-            features=nlp.Features(
-                {"predictions": nlp.Sequence(nlp.Value("int8")), "references": nlp.Sequence(nlp.Value("int8")),}
+            features=datasets.Features(
+                {"predictions": datasets.Sequence(datasets.Value("int8")), "references": datasets.Sequence(datasets.Value("int8")),}
             ),
             codebase_urls=[""],
             reference_urls=[""],
