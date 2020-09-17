@@ -1,6 +1,6 @@
 # Benchmark for Transformers
 
-Evaluate performance of Transformers in different scenarios.
+Evaluate performance of Transformers in different scenarios. The library is mainly based on the work of the 🤗 HuggingFace team and should be used if you already use their libraries.
 
 ## Installation
 
@@ -120,7 +120,7 @@ For example, ``sst-2.json`` is a benchmark file for the Sentiment Analysis datas
 
 Once the benchmark file is ready, you can either load it using the API or directly run it using the CLI.
 
-#### Run ``json`` file using API
+#### Run the ``json`` file using API
 
 ```python
 from benchmark_for_transformers import Benchmark
@@ -134,6 +134,8 @@ print(df)
 # albert-base 	11685122 	0.012642 	0.014657 	0.925459
 # bert base 	109483778 	0.010371 	0.012245 	0.924312
 ```
+
+#### Run the ``json`` file using CLI
 
 ```bash
 benchmark-for-transformers-run --run_args_file "sst-2.json" --verbose --csv_file "results.csv"
