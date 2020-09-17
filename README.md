@@ -1,6 +1,6 @@
 # Benchmark for Transformers
 
-Evaluate performance of Transformers in different scenarios. The library is mainly based on the work of the 🤗 HuggingFace team and should be used if you already use their libraries.
+Evaluate performance of Transformers in different scenarios. The library is mainly based on the work of the [🤗](https://huggingface.co/) team and should be used if you already use their libraries.
 
 ## Installation
 
