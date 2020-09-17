@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function
 import json
 import os
 
-import nlp
+import datasets
 import numpy as np
 
 _CITATION = """
@@ -45,19 +45,19 @@ _SHUFFLED_SENTENCES = "shuffled_sentences"
 _LABEL = "label"
 
 
-class ArXivOrdering(nlp.GeneratorBasedBuilder):
+class ArXivOrdering(datasets.GeneratorBasedBuilder):
     """arXiv ordering dataset."""
 
-    VERSION = nlp.Version("1.0.0")
+    VERSION = datasets.Version("1.0.0")
 
     def _info(self):
-        info = nlp.DatasetInfo(
+        info = datasets.DatasetInfo(
             description=_DESCRIPTION,
-            features=nlp.Features(
+            features=datasets.Features(
                 {
-                    _SENTENCES: nlp.Sequence(nlp.Value("string")),
-                    _SHUFFLED_SENTENCES: nlp.Sequence(nlp.Value("string")),
-                    _LABEL: nlp.Sequence(nlp.Value("int8")),
+                    _SENTENCES: datasets.Sequence(datasets.Value("string")),
+                    _SHUFFLED_SENTENCES: datasets.Sequence(datasets.Value("string")),
+                    _LABEL: datasets.Sequence(datasets.Value("int8")),
                 }
             ),
             supervised_keys=None,
@@ -71,9 +71,15 @@ class ArXivOrdering(nlp.GeneratorBasedBuilder):
         data_path = dl_manager.download_and_extract(_URL)
 
         return [
-            nlp.SplitGenerator(name=nlp.Split.TRAIN, gen_kwargs={"path": os.path.join(data_path, "train.txt")},),
-            nlp.SplitGenerator(name=nlp.Split.VALIDATION, gen_kwargs={"path": os.path.join(data_path, "valid.txt")},),
-            nlp.SplitGenerator(name=nlp.Split.TEST, gen_kwargs={"path": os.path.join(data_path, "test.txt")},),
+            datasets.SplitGenerator(
+                name=datasets.Split.TRAIN, gen_kwargs={"path": os.path.join(data_path, "train.txt")},
+            ),
+            datasets.SplitGenerator(
+                name=datasets.Split.VALIDATION, gen_kwargs={"path": os.path.join(data_path, "valid.txt")},
+            ),
+            datasets.SplitGenerator(
+                name=datasets.Split.TEST, gen_kwargs={"path": os.path.join(data_path, "test.txt")},
+            ),
         ]
 
     def _generate_examples(self, path=None):

@@ -1,5 +1,5 @@
 # Local files
-results.csv
+*.csv
 *.lock
 
 # Byte-compiled / optimized / DLL files

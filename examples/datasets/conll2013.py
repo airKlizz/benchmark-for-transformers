@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2020 HuggingFace nlp Authors.
+# Copyright 2020 HuggingFace datasets Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ from __future__ import absolute_import, division, print_function
 import logging
 import os
 
-import nlp
+import datasets
 
 _CITATION = """
 """
@@ -32,7 +32,7 @@ _DESCRIPTION = """
 _URL = "https://drive.google.com/uc?export=download&id=1RYAbisQWhzHWB3RUYBAP0KdN9ofUOwtj"
 
 
-class CoNLL_2013Config(nlp.BuilderConfig):
+class CoNLL_2013Config(datasets.BuilderConfig):
     """The CoNLL 2013 Dataset."""
 
     def __init__(self, **kwargs):
@@ -44,21 +44,21 @@ class CoNLL_2013Config(nlp.BuilderConfig):
         super(CoNLL_2013Config, self).__init__(**kwargs)
 
 
-class CoNLL_2013(nlp.GeneratorBasedBuilder):
+class CoNLL_2013(datasets.GeneratorBasedBuilder):
     """The CoNLL 2013 Dataset."""
 
     BUILDER_CONFIGS = [
-        CoNLL_2013Config(name="conll2013", version=nlp.Version("1.0.0"), description="The CoNLL 2013 dataset"),
+        CoNLL_2013Config(name="conll2013", version=datasets.Version("1.0.0"), description="The CoNLL 2013 dataset"),
     ]
 
     def _info(self):
-        return nlp.DatasetInfo(
+        return datasets.DatasetInfo(
             description=_DESCRIPTION,
-            features=nlp.Features(
+            features=datasets.Features(
                 {
-                    "id": nlp.Value("string"),
-                    "tokens": nlp.Sequence(nlp.Value("string")),
-                    "labels": nlp.Sequence(nlp.Value("string")),
+                    "id": datasets.Value("string"),
+                    "tokens": datasets.Sequence(datasets.Value("string")),
+                    "labels": datasets.Sequence(datasets.Value("string")),
                 }
             ),
             supervised_keys=None,
@@ -71,14 +71,14 @@ class CoNLL_2013(nlp.GeneratorBasedBuilder):
         data_path = dl_manager.download_and_extract(_URL)
 
         return [
-            nlp.SplitGenerator(
-                name=nlp.Split.TRAIN, gen_kwargs={"filepath": os.path.join(data_path, "eng.train.conll")}
+            datasets.SplitGenerator(
+                name=datasets.Split.TRAIN, gen_kwargs={"filepath": os.path.join(data_path, "eng.train.conll")}
             ),
-            nlp.SplitGenerator(
-                name=nlp.Split.VALIDATION, gen_kwargs={"filepath": os.path.join(data_path, "eng.testa.conll")}
+            datasets.SplitGenerator(
+                name=datasets.Split.VALIDATION, gen_kwargs={"filepath": os.path.join(data_path, "eng.testa.conll")}
             ),
-            nlp.SplitGenerator(
-                name=nlp.Split.TEST, gen_kwargs={"filepath": os.path.join(data_path, "eng.testb.conll")}
+            datasets.SplitGenerator(
+                name=datasets.Split.TEST, gen_kwargs={"filepath": os.path.join(data_path, "eng.testb.conll")}
             ),
         ]
 

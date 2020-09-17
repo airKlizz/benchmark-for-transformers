@@ -2,7 +2,7 @@ import torch
 from transformers import (MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
                           AutoModelForSequenceClassification, AutoTokenizer)
 
-from .model import Model
+from ..model import Model
 
 
 class ClassificationModel(Model):

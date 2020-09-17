@@ -15,7 +15,7 @@
 """ Kendall's tau from SciPy. """
 
 import absl  # Here to have a nice missing dependency error message early on
-import nlp
+import datasets
 import nltk  # Here to have a nice missing dependency error message early on
 import numpy as np
 import six  # Here to have a nice missing dependency error message early on
@@ -47,14 +47,17 @@ Returns:
 """
 
 
-class KendallTau(nlp.Metric):
+class KendallTau(datasets.Metric):
     def _info(self):
-        return nlp.MetricInfo(
+        return datasets.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
-            features=nlp.Features(
-                {"predictions": nlp.Sequence(nlp.Value("int8")), "references": nlp.Sequence(nlp.Value("int8")),}
+            features=datasets.Features(
+                {
+                    "predictions": datasets.Sequence(datasets.Value("int8")),
+                    "references": datasets.Sequence(datasets.Value("int8")),
+                }
             ),
             codebase_urls=["https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kendalltau.html"],
             reference_urls=["https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient"],

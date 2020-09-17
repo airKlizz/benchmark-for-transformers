@@ -2,7 +2,7 @@ import torch
 from transformers import (MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
                           AutoModelForTokenClassification, AutoTokenizer)
 
-from .model import Model
+from ..model import Model
 
 
 class NerModel(Model):
