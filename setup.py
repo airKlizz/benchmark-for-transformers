@@ -11,17 +11,21 @@ setup(
     keywords="NLP Benchmark Transformers",
     license="MIT",
     url="https://github.com/airKlizz/benchmark-for-transformers",
+    download_url = "https://github.com/airKlizz/benchmark-for-transformers/archive/v_0.1.tar.gz",
     packages=find_packages(),
-    install_requires=["transformers>=3.1.0", "datasets", "onnx", "onnxruntime"],
+    install_requires=["transformers>=3.1.0", "datasets", "torch", "torchvision", "onnx", "onnxruntime"],
     entry_points={"console_scripts": ["benchmark-for-transformers-run=benchmark_for_transformers.run_cli:main"]},
     python_requires=">=3.6.0",
     classifiers=[
-        'Development Status :: 3 - Alpha',      # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
-        'Intended Audience :: Developers',      # Define that your audience are developers
-        'Topic :: Scientific/Engineering :: Build Tools',
-        'License :: OSI Approved :: MIT License',   # Again, pick a license
-        'Programming Language :: Python :: 3',      #Specify which pyhton versions that you want to support
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Education",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
 )
