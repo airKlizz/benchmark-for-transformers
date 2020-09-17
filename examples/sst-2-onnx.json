@@ -72,7 +72,7 @@
         {
             "metric_name": "glue",
             "values": ["accuracy"],
-            "init_kwargs": {"name": "sst2"}
+            "init_kwargs": {"config_name": "sst2"}
         }
     ]
 }
