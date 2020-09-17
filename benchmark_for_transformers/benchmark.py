@@ -6,12 +6,12 @@ import nlp
 import numpy as np
 import pandas as pd
 
-from metrics.utils import get_value
-from models.classification import ClassificationModel
-from models.model import Model
-from models.ner import NerModel
-from models.ordering import OrderingModel
-from models.summarization import SummarizationModel
+from .metrics_utils import get_value
+from .model import Model
+from .models.classification import ClassificationModel
+from .models.ner import NerModel
+from .models.ordering import OrderingModel
+from .models.summarization import SummarizationModel
 
 ALL_MODEL_CLASS = {
     "summarization": SummarizationModel,
@@ -45,6 +45,9 @@ class Scenario:
     @classmethod
     def from_dict(cls, data):
         return cls(**data)
+
+    def __str__(self):
+        return f"Scenario(name={self.name})"
 
 
 @dataclass
@@ -138,6 +141,13 @@ class Benchmark(object):
         with open(file, "r") as f:
             data = json.load(f)
         return cls.from_dict(data)
+
+    def delete_scenario(self, scenario_name: str):
+        for idx, scenario in enumerate(self.scenarios):
+            if scenario_name == scenario.name:
+                self.scenarios.pop(idx)
+                return
+        raise ValueError(f"{scenario_name} not in scenarios")
 
     def reset_scenarios(self):
         self.scenarios = []
@@ -244,6 +254,8 @@ class Benchmark(object):
             if verbose:
                 print(f"INFO: Run scenario: {scenario.name}.")
             stats = self.run_scenario(scenario.name)
+            if verbose:
+                print(f"INFO: Scenario result: {scenario.name}\n{stats}")
             if all_stats == None:
                 all_stats = stats
             else:

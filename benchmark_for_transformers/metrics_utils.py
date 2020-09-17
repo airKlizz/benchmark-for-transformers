@@ -20,4 +20,9 @@ def get_value(score, value):
         return score["tau"]
     if value == "pmr":
         return score["pmr"]
-    raise ValueError(f"Metric {value} not defined.")
+    try:
+        return score[value]
+    except:
+        raise ValueError(
+            f"{value} not in the metric output and correspondant value not defined in metrics_utils.py. You should change {value} to a value in {score.keys()} or define a condition in metrics_utils.py"
+        )

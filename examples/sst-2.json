@@ -19,34 +19,11 @@
             "model_class": "classification",
             "model_name": "textattack/bert-base-uncased-SST-2",
             "batch_size": 1
-        },
-        {
-            "name": "quantized distilbert",
-            "model_class": "classification",
-            "model_name": "distilbert-base-uncased-finetuned-sst-2-english",
-            "tokenizer_name": "distilbert-base-uncased",
-            "batch_size": 1,
-            "quantization": true
-        },
-        {
-            "name": "quantized albert-base",
-            "model_class": "classification",
-            "model_name": "textattack/albert-base-v2-SST-2",
-            "tokenizer_name": "textattack/albert-base-v2-SST-2",
-            "batch_size": 1,
-            "quantization": true
-        },
-        {
-            "name": "quantized bert base",
-            "model_class": "classification",
-            "model_name": "textattack/bert-base-uncased-SST-2",
-            "batch_size": 1,
-            "quantization": true
         }
     ],
     "dataset": {
         "dataset_name": "glue",
-        "split": "validation[:200]",
+        "split": "validation[:20]",
         "x_column_name": ["sentence"],
         "y_column_name": "label",
         "init_kwargs": {"name": "sst2"}

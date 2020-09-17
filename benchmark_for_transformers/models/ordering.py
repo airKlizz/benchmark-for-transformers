@@ -5,7 +5,7 @@ except:
         "Warning: If you try to use BartForSequenceOrdering, you are using the wring python env. Please make sure to use the good branch"
     )
 
-from .model import Model
+from ..model import Model
 
 
 class OrderingModel(Model):

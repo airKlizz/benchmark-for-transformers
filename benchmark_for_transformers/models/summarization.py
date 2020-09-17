@@ -1,6 +1,6 @@
 from transformers import AutoModelWithLMHead, AutoTokenizer
 
-from .model import Model
+from ..model import Model
 
 
 class SummarizationModel(Model):
