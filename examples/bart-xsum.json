@@ -49,22 +49,6 @@
             "device": "cuda"
         },
         {
-            "name": "distilbart 12-1",
-            "model_class": "summarization",
-            "model_name": "sshleifer/distilbart-xsum-12-1",
-            "tokenizer_name": "facebook/bart-large",
-            "init_kwargs": {
-                "generation_parameters": {
-                    "num_beams": 4,
-                    "length_penalty": 0.5,
-                    "min_length": 11,
-                    "max_length": 62
-                }
-            },
-            "batch_size": 1,
-            "device": "cuda"
-        },
-        {
             "name": "distilbart 9-6",
             "model_class": "summarization",
             "model_name": "sshleifer/distilbart-xsum-9-6",
@@ -113,57 +97,9 @@
             "device": "cuda"
         },
         {
-            "name": "distilbart student 12-1",
-            "model_class": "summarization",
-            "model_name": "sshleifer/student_xsum_12_1",
-            "tokenizer_name": "facebook/bart-large",
-            "init_kwargs": {
-                "generation_parameters": {
-                    "num_beams": 4,
-                    "length_penalty": 0.5,
-                    "min_length": 11,
-                    "max_length": 62
-                }
-            },
-            "batch_size": 1,
-            "device": "cuda"
-        },
-        {
-            "name": "distilbart student 12-2",
-            "model_class": "summarization",
-            "model_name": "sshleifer/student_xsum_12_2",
-            "tokenizer_name": "facebook/bart-large",
-            "init_kwargs": {
-                "generation_parameters": {
-                    "num_beams": 4,
-                    "length_penalty": 0.5,
-                    "min_length": 11,
-                    "max_length": 62
-                }
-            },
-            "batch_size": 1,
-            "device": "cuda"
-        },
-        {
             "name": "distilbart student 12-3",
             "model_class": "summarization",
             "model_name": "sshleifer/student_xsum_12_3",
-            "tokenizer_name": "facebook/bart-large",
-            "init_kwargs": {
-                "generation_parameters": {
-                    "num_beams": 4,
-                    "length_penalty": 0.5,
-                    "min_length": 11,
-                    "max_length": 62
-                }
-            },
-            "batch_size": 1,
-            "device": "cuda"
-        },
-        {
-            "name": "distilbart student 12-4",
-            "model_class": "summarization",
-            "model_name": "sshleifer/student_xsum_12_4",
             "tokenizer_name": "facebook/bart-large",
             "init_kwargs": {
                 "generation_parameters": {
@@ -275,7 +211,7 @@
     ],
     "dataset": {
         "dataset_name": "xsum",
-        "split": "test[:10]",
+        "split": "test[:100]",
         "x_column_name": ["document"],
         "y_column_name": "summary"
     },
