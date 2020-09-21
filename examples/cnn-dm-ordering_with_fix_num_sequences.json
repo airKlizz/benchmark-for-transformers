@@ -1,0 +1,80 @@
+{
+    "scenarios": [
+        {
+            "name": "Scenario with 5 sequences",
+            "model_class": "ordering_with_fix_num_sequences",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-cnn-dailymail",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+		            "decoder_start_token_ids": [0, 2]
+                },
+                "num_sequences": 5
+            },
+            "batch_size": 1
+        },
+	{
+            "name": "Scenario with 10 sequences",
+            "model_class": "ordering_with_fix_num_sequences",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-cnn-dailymail",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+                            "decoder_start_token_ids": [0, 2]
+                },
+                "num_sequences": 10
+            },
+            "batch_size": 1
+        },
+	{
+            "name": "Scenario with 15 sequences",
+            "model_class": "ordering_with_fix_num_sequences",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-cnn-dailymail",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+                            "decoder_start_token_ids": [0, 2]
+                },
+                "num_sequences": 15
+            },
+            "batch_size": 1
+        },
+	{
+            "name": "Scenario with all the sequences",
+            "model_class": "ordering_with_fix_num_sequences",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-cnn-dailymail",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+                            "decoder_start_token_ids": [0, 2]
+                },
+                "num_sequences": null
+            },
+            "batch_size": 1
+        }
+    ],
+    "dataset": {
+        "dataset_name": "datasets/cnn_dailymail_ordering.py",
+        "split": "test[:20]",
+        "x_column_name": ["shuffled_sentences", "label"],
+        "y_column_name": "label"
+    },
+    "metrics": [
+        {
+            "metric_name": "metrics/kendalltau.py",
+            "values": ["kendalltau"]
+        },
+        {
+            "metric_name": "metrics/lcs.py",
+            "values": ["rougeL"]
+        },
+        {
+            "metric_name": "metrics/pmr.py",
+            "values": ["pmr"]
+        }
+    ]
+}
