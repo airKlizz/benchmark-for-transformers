@@ -45,10 +45,14 @@ class OrderingModelWithTitle(Model):
             return_tensors="pt",
         )
         decoder_start_token_ids = self.tokenizer(title + " " + section_title + " ")
+        decoder_start_token_ids = decoder_start_token_ids["input_ids"]
+
+        print(f"Prediction of Ordering with title. Title: {title} {section_title}. decoder_start_token_ids: {decoder_start_token_ids}")
+
         outputs = self.model.order(
             input_ids=pt_batch["input_ids"].to(self.device),
             attention_mask=pt_batch["attention_mask"].to(self.device),
-            decoder_start_token_ids=decoder_start_token_ids["input_ids"],
+            decoder_start_token_ids=decoder_start_token_ids,
             **self.ordering_parameters,
         )
         for output, sequences in zip(outputs, x):
