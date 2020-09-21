@@ -1,7 +1,7 @@
 {
     "scenarios": [
         {
-            "name": "Version1",
+            "name": "Bart",
             "model_class": "ordering",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia/checkpoint-50000",
             "tokenizer_name": "facebook/bart-base",
@@ -11,13 +11,27 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "Bart with title",
+            "model_class": "ordering with title",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia/checkpoint-50000",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
         }
     ],
     "dataset": {
         "dataset_name": "datasets/wikipedia_ordering.py",
         "split": "test[:1000]",
-        "x_column_name": ["shuffled_sentences"],
+        "x_column_name": ["shuffled_sentences", "title", "section_title"],
         "y_column_name": "label",
         "init_kwargs": {
             "cache_dir": "/data/experiments/rcalizzano/cache"

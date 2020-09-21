@@ -14,6 +14,7 @@ from .model import Model
 from .models.classification import ClassificationModel
 from .models.ner import NerModel
 from .models.ordering import OrderingModel
+from .models.ordering_with_title import OrderingModelWithTitle
 from .models.summarization import SummarizationModel
 
 ALL_MODEL_CLASS = {
@@ -21,6 +22,7 @@ ALL_MODEL_CLASS = {
     "classification": ClassificationModel,
     "ner": NerModel,
     "ordering": OrderingModel,
+    "ordering with title": OrderingModelWithTitle,
 }
 
 
