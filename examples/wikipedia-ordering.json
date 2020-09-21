@@ -43,7 +43,7 @@
         }
     ],
     "dataset": {
-        "dataset_name": "datasets/wikipedia_ordering.py",
+        "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/wikipedia_ordering.py",
         "split": "test[:1000]",
         "x_column_name": ["shuffled_sentences", "title", "section_title"],
         "y_column_name": "label",
@@ -53,15 +53,15 @@
     },
     "metrics": [
         {
-            "metric_name": "metrics/kendalltau.py",
+            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau.py",
             "values": ["kendalltau"]
         },
         {
-            "metric_name": "metrics/lcs.py",
+            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/lcs.py",
             "values": ["rougeL"]
         },
         {
-            "metric_name": "metrics/pmr.py",
+            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/pmr.py",
             "values": ["pmr"]
         }
     ]
