@@ -1,7 +1,7 @@
 {
     "scenarios": [
         {
-            "name": "Bart backup",
+            "name": "Bart with title w/o title",
             "model_class": "ordering",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia-with-title/checkpoint-150000",
             "tokenizer_name": "facebook/bart-base",
