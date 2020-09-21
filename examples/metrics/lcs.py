@@ -16,7 +16,7 @@
 
 # The dependencies in https://github.com/google-research/google-research/blob/master/rouge/requirements.txt
 import absl  # Here to have a nice missing dependency error message early on
-import nlp
+import datasets
 import nltk  # Here to have a nice missing dependency error message early on
 import numpy  # Here to have a nice missing dependency error message early on
 import six  # Here to have a nice missing dependency error message early on
@@ -33,14 +33,14 @@ Calculates average longest common subsequence
 """
 
 
-class Lcs(nlp.Metric):
+class Lcs(datasets.Metric):
     def _info(self):
-        return nlp.MetricInfo(
+        return datasets.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
-            features=nlp.Features(
-                {"predictions": nlp.Sequence(nlp.Value("int8")), "references": nlp.Sequence(nlp.Value("int8")),}
+            features=datasets.Features(
+                {"predictions": datasets.Sequence(datasets.Value("int8")), "references": datasets.Sequence(datasets.Value("int8")),}
             ),
             codebase_urls=["https://github.com/google-research/google-research/tree/master/rouge"],
             reference_urls=[
