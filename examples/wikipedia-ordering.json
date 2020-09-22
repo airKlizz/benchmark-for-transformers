@@ -1,9 +1,9 @@
 {
     "scenarios": [
         {
-            "name": "Bart with title w/o title",
+            "name": "Bart",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia-with-title/checkpoint-150000",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia-with-noise/checkpoint-162500",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -15,13 +15,14 @@
             "device": "cuda"
         },
         {
-            "name": "Bart with title",
-            "model_class": "ordering with title",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia-with-title/checkpoint-150000",
+            "name": "Bart backup",
+            "model_class": "ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia-with-title/checkpoint-142500",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
-                    "num_beams": 1
+                    "num_beams": 1,
+		            "decoder_start_token_ids": [0, 2]
                 }
             },
             "batch_size": 1,
