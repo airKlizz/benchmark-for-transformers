@@ -47,7 +47,7 @@ Returns:
 """
 
 
-class KendallTau(datasets.Metric):
+class KendallTau2(datasets.Metric):
     def _info(self):
         return datasets.MetricInfo(
             description=_DESCRIPTION,
@@ -78,6 +78,8 @@ class KendallTau(datasets.Metric):
     def kendalltau(self, X, Y):
 
         assert len(X) == len(Y)
+
+        print("compute kendalltau")
 
         concordant = 0
         discordant = 0
