@@ -31,7 +31,7 @@
     ],
     "dataset": {
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/wikipedia_ordering.py",
-        "split": "test[:10]",
+        "split": "test[:1000]",
         "x_column_name": ["shuffled_sentences", "title", "section_title"],
         "y_column_name": "label",
         "init_kwargs": {
