@@ -46,8 +46,39 @@ Returns:
     tau: The tau statistic,
 """
 
+def substitution(X, Y):
 
-class KendallTau2(datasets.Metric):
+    assert len(X) == len(Y)
+
+    permutation = {}
+    for i, x in enumerate(X):
+        permutation[x] = i
+    for i in range(len(Y)):
+        Y[i] = permutation[Y[i]]
+
+    return Y
+
+def get_nb_inv(X): 
+  
+    nb_inv = 0
+    for i in range(len(X)): 
+        for j in range(i + 1, len(X)): 
+            if (X[i] > X[j]): 
+                nb_inv += 1
+  
+    return nb_inv 
+
+def kendall_tau_bis(X, Y):
+
+    new_Y = substitution(X, Y)
+    nb_inv = get_nb_inv(new_Y)
+    n = len(X)
+    binomial_coefficient = n*(n-1)/2
+    tau = 1 - 2*nb_inv/binomial_coefficient
+
+    return tau
+
+class KendallTauBis(datasets.Metric):
     def _info(self):
         return datasets.MetricInfo(
             description=_DESCRIPTION,
@@ -67,31 +98,10 @@ class KendallTau2(datasets.Metric):
         result = {"tau": np.array([])}
 
         for prediction, reference in zip(predictions, references):
-            tau = self.kendalltau(
+            tau = kendall_tau_bis(
                 X=prediction, Y=reference
             )
             result["tau"] = np.append(result["tau"], tau)
 
         result["tau"] = result["tau"].mean()
         return result
-
-    def kendalltau(self, X, Y):
-
-        assert len(X) == len(Y)
-        
-        concordant = 0
-        discordant = 0
-        n = len(X)
-
-        for i, (xi, yi) in enumerate(zip(X, Y)):
-            for j, (xj, yj) in enumerate(zip(X, Y)):
-                if not i < j: continue
-                if (xi > xj and yi > yj) or (xi < xj and yi < yj):
-                    concordant += 1
-                else:
-                    discordant += 1
-        
-        binomial_coefficient = n*(n-1)/2
-        tau = (concordant-discordant)/binomial_coefficient
-
-        return tau

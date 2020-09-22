@@ -48,6 +48,10 @@
             "values": ["kendalltau"]
         },
         {
+            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltaubis.py",
+            "values": ["kendalltau"]
+        },
+        {
             "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/lcs.py",
             "values": ["rougeL"]
         },
