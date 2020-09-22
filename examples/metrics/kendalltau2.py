@@ -80,6 +80,7 @@ class KendallTau2(datasets.Metric):
         assert len(X) == len(Y)
 
         print("compute kendalltau")
+        print(f"X: {X} - Y: {Y})
 
         concordant = 0
         discordant = 0
