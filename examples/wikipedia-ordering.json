@@ -17,7 +17,7 @@
         {
             "name": "Bart backup",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia-with-title/checkpoint-142500",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia/backup_182500",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
