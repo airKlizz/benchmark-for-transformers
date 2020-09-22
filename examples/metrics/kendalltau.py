@@ -12,26 +12,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-""" Kendall's tau from SciPy. """
+""" Kendall's tau by hand. """
 
 import absl  # Here to have a nice missing dependency error message early on
 import datasets
 import nltk  # Here to have a nice missing dependency error message early on
 import numpy as np
 import six  # Here to have a nice missing dependency error message early on
-from scipy.stats import kendalltau
 
 _CITATION = """
+https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering/blob/master/topological_sort.py#L91-L105
 """
 
-_DESCRIPTION = """\
-Calculate Kendall’s tau, a correlation measure for ordinal data.
-
-Kendall’s tau is a measure of the correspondence between two rankings. 
-Values close to 1 indicate strong agreement, values close to -1 indicate strong disagreement. 
-This is the 1945 “tau-b” version of Kendall’s tau [2], which can account for ties and which reduces to the 1938 “tau-a” version [1] in absence of ties.
-This metrics is a wrapper around SciPy implementation:
-https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kendalltau.html
+_DESCRIPTION = """
 """
 
 _KWARGS_DESCRIPTION = """
@@ -43,11 +36,41 @@ Args:
         should be a list of list of rankings.
 Returns:
     tau: The tau statistic,
-    pvalue: The two-sided p-value for a hypothesis test whose null hypothesis is an absence of association, tau = 0.
 """
 
+def substitution(X, Y):
 
-class KendallTau(datasets.Metric):
+    assert len(X) == len(Y)
+
+    permutation = {}
+    for i, x in enumerate(X):
+        permutation[x] = i
+    for i in range(len(Y)):
+        Y[i] = permutation[Y[i]]
+
+    return Y
+
+def get_nb_inv(X): 
+  
+    nb_inv = 0
+    for i in range(len(X)): 
+        for j in range(i + 1, len(X)): 
+            if (X[i] > X[j]): 
+                nb_inv += 1
+  
+    return nb_inv 
+
+def kendall_tau_bis(X, Y):
+
+    new_Y = substitution(X, Y)
+    nb_inv = get_nb_inv(new_Y)
+    n = len(X)
+    binomial_coefficient = n*(n-1)/2
+    tau = 1 - 2*nb_inv/binomial_coefficient
+
+    return tau
+
+class KendallTauByHand(datasets.Metric):
     def _info(self):
         return datasets.MetricInfo(
             description=_DESCRIPTION,
@@ -59,20 +82,18 @@ class KendallTau(datasets.Metric):
                     "references": datasets.Sequence(datasets.Value("int8")),
                 }
             ),
-            codebase_urls=["https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kendalltau.html"],
-            reference_urls=["https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient"],
+            codebase_urls=["https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering/blob/master/topological_sort.py#L91-L105"],
+            reference_urls=["https://www.aclweb.org/anthology/J06-4002/"],
         )
 
-    def _compute(self, predictions, references, initial_lexsort=None, nan_policy="propagate", method="auto"):
-        result = {"tau": np.array([]), "pvalue": np.array([])}
+    def _compute(self, predictions, references):
+        result = {"tau": np.array([])}
 
         for prediction, reference in zip(predictions, references):
-            tau, pvalue = kendalltau(
-                x=prediction, y=reference, initial_lexsort=initial_lexsort, nan_policy=nan_policy, method=method
+            tau = kendalltau(
+                X=prediction, Y=reference
             )
             result["tau"] = np.append(result["tau"], tau)
-            result["pvalue"] = np.append(result["pvalue"], pvalue)
 
         result["tau"] = result["tau"].mean()
-        result["pvalue"] = result["pvalue"].mean()
         return result

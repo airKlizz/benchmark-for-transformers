@@ -12,19 +12,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-""" Kendall's tau by hand. """
+""" Kendall's tau from SciPy. """
 
 import absl  # Here to have a nice missing dependency error message early on
 import datasets
 import nltk  # Here to have a nice missing dependency error message early on
 import numpy as np
 import six  # Here to have a nice missing dependency error message early on
+from scipy.stats import kendalltau
 
 _CITATION = """
-https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering/blob/master/topological_sort.py#L91-L105
 """
 
-_DESCRIPTION = """
+_DESCRIPTION = """\
+Calculate Kendall’s tau, a correlation measure for ordinal data.
+
+Kendall’s tau is a measure of the correspondence between two rankings. 
+Values close to 1 indicate strong agreement, values close to -1 indicate strong disagreement. 
+This is the 1945 “tau-b” version of Kendall’s tau [2], which can account for ties and which reduces to the 1938 “tau-a” version [1] in absence of ties.
+This metrics is a wrapper around SciPy implementation:
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kendalltau.html
 """
 
 _KWARGS_DESCRIPTION = """
@@ -36,25 +43,11 @@ Args:
         should be a list of list of rankings.
 Returns:
     tau: The tau statistic,
+    pvalue: The two-sided p-value for a hypothesis test whose null hypothesis is an absence of association, tau = 0.
 """
 
-def kendalltau(X, Y):
-        '''
-        It calculates the number of inversions required by the predicted 
-        order to reach the correct order.
-        '''
-        pred_pairs, gold_pairs = [], []
-        for i in range(len(Y)):
-            for j in range(i+1, len(Y)):
-                pred_pairs.append((Y[i], Y[j]))
-                gold_pairs.append((X[i], X[j]))
-        common = len(set(pred_pairs).intersection(set(gold_pairs)))
-        uncommon = len(gold_pairs) - common
-        tau = 1 - (2*(uncommon/len(gold_pairs)))
 
-        return tau
-
-class KendallTauShrimai(datasets.Metric):
+class KendallTauScipy(datasets.Metric):
     def _info(self):
         return datasets.MetricInfo(
             description=_DESCRIPTION,
@@ -66,18 +59,20 @@ class KendallTauShrimai(datasets.Metric):
                     "references": datasets.Sequence(datasets.Value("int8")),
                 }
             ),
-            codebase_urls=["https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering/blob/master/topological_sort.py#L91-L105"],
-            reference_urls=["https://www.aclweb.org/anthology/J06-4002/"],
+            codebase_urls=["https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kendalltau.html"],
+            reference_urls=["https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient"],
         )
 
-    def _compute(self, predictions, references):
-        result = {"tau": np.array([])}
+    def _compute(self, predictions, references, initial_lexsort=None, nan_policy="propagate", method="auto"):
+        result = {"tau": np.array([]), "pvalue": np.array([])}
 
         for prediction, reference in zip(predictions, references):
-            tau = kendalltau(
-                X=prediction, Y=reference
+            tau, pvalue = kendalltau(
+                x=prediction, y=reference, initial_lexsort=initial_lexsort, nan_policy=nan_policy, method=method
             )
             result["tau"] = np.append(result["tau"], tau)
+            result["pvalue"] = np.append(result["pvalue"], pvalue)
 
         result["tau"] = result["tau"].mean()
+        result["pvalue"] = result["pvalue"].mean()
         return result
