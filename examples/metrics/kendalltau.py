@@ -60,7 +60,7 @@ def get_nb_inv(X):
   
     return nb_inv 
 
-def kendall_tau_bis(X, Y):
+def kendalltau(X, Y):
 
     new_Y = substitution(X, Y)
     nb_inv = get_nb_inv(new_Y)
