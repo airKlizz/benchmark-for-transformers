@@ -120,10 +120,16 @@ class WikipediaOrdering(datasets.GeneratorBasedBuilder):
 
     def shuffle_sentences_with_noise(self, sentences, buffer):
         buffer_sentences = [sentence for sentences in buffer for sentence in sentences]
-        sentences_with_noise = sentences + choices(buffer_sentences, k=randint(0, 5))
+        k = randint(0, 5)
+        sentences_with_noise = sentences + choices(buffer_sentences, k=k)
         sentences_with_noise = np.array(sentences_with_noise)
         permutation = np.random.permutation(len(sentences_with_noise))
         shuffled_sentences = sentences_with_noise[permutation].tolist()
         label = np.argsort(permutation).tolist()
-        label = [l if s in sentences else len(label) for l, s in zip(label, shuffled_sentences)]
-        return sentences_with_noise, shuffled_sentences, label
+        new_label = []
+        for l, s in zip(label, shuffled_sentences):
+            if s in sentences:
+                new_label.append(l)
+        for _ in range(k):
+            new_label.append(len(label))
+        return list(sentences_with_noise), shuffled_sentences, new_label
