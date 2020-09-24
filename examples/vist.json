@@ -17,7 +17,7 @@
         {
             "name": "Bart pre-trained on arXiv with Pointer Head",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base/checkpoint-83000",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-vist-based-on-arxiv/backup-2500",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
