@@ -13,11 +13,25 @@
             },
             "batch_size": 1,
             "device": "cuda"
+        },
+        {
+            "name": "Bart pre-trained on arXiv with Pointer Head",
+            "model_class": "ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base/checkpoint-83000",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
         }
     ],
     "dataset": {
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/vist_ordering.py",
-        "split": "test",
+        "split": "test[:100]",
         "x_column_name": ["shuffled_sentences"],
         "y_column_name": "label"
     },
