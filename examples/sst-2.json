@@ -5,20 +5,23 @@
             "model_class": "classification",
             "model_name": "distilbert-base-uncased-finetuned-sst-2-english",
             "tokenizer_name": "distilbert-base-uncased",
-            "batch_size": 1
+            "batch_size": 1,
+            "device": "cuda"
         },
         {
             "name": "albert-base",
             "model_class": "classification",
             "model_name": "textattack/albert-base-v2-SST-2",
             "tokenizer_name": "textattack/albert-base-v2-SST-2",
-            "batch_size": 1
+            "batch_size": 1,
+            "device": "cuda"
         },
         {
             "name": "bert base",
             "model_class": "classification",
             "model_name": "textattack/bert-base-uncased-SST-2",
-            "batch_size": 1
+            "batch_size": 1,
+            "device": "cuda"
         }
     ],
     "dataset": {

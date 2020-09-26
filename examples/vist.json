@@ -3,7 +3,7 @@
         {
             "name": "Bart with Pointer Head",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-vist/backup-4000",
+            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-vist-ordering",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -15,9 +15,9 @@
             "device": "cuda"
         },
         {
-            "name": "Bart pre-trained on arXiv with Pointer Head",
+            "name": "Bart with Pointer Head pre-trained on arXiv ",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-vist-based-on-arxiv/backup-2500",
+            "model_name": "",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -31,7 +31,7 @@
     ],
     "dataset": {
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/vist_ordering.py",
-        "split": "test[:100]",
+        "split": "test",
         "x_column_name": ["shuffled_sentences"],
         "y_column_name": "label"
     },
