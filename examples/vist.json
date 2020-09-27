@@ -17,7 +17,7 @@
         {
             "name": "Bart with Pointer Head pre-trained on arXiv ",
             "model_class": "ordering",
-            "model_name": "",
+            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-arxiv-vist-ordering",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
