@@ -1,20 +1,6 @@
 {
     "scenarios": [
         {
-            "name": "Bart with Pointer Head",
-            "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-roc-ordering",
-            "tokenizer_name": "facebook/bart-base",
-            "init_kwargs": {
-                "ordering_parameters": {
-                    "num_beams": 1,
-		            "decoder_start_token_ids": [0, 2]
-                }
-            },
-            "batch_size": 1,
-            "device": "cuda"
-        },
-        {
             "name": "Bart with new Pointer Head",
             "model_class": "ordering",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-2-bart-base-roc/checkpoint-1500",
