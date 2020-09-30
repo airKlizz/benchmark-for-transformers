@@ -13,25 +13,31 @@
             },
             "batch_size": 1,
             "device": "cuda"
+        },
+        {
+            "name": "Bart with new Pointer Head num beams 4",
+            "model_class": "ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-2-bart-base-roc",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 4,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
         }
     ],
     "dataset": {
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/rocstory_ordering.py",
-        "split": "test",
+        "split": "test[:100]",
         "x_column_name": ["shuffled_sentences"],
         "y_column_name": "label"
     },
     "metrics": [
         {
             "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltaubis.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau_scipy.py",
             "values": ["kendalltau"]
         },
         {
