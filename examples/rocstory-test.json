@@ -27,11 +27,25 @@
             },
             "batch_size": 1,
             "device": "cuda"
+        },
+        {
+            "name": "Bart with new Pointer Head num beams 16",
+            "model_class": "ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-2-bart-base-roc",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 16,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
         }
     ],
     "dataset": {
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/rocstory_ordering.py",
-        "split": "test[:100]",
+        "split": "test",
         "x_column_name": ["shuffled_sentences"],
         "y_column_name": "label"
     },
