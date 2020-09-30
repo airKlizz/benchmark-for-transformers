@@ -3,7 +3,7 @@
         {
             "name": "Bart with Pointer Head",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-roc-ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-roc-ordering",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -15,9 +15,23 @@
             "device": "cuda"
         },
         {
-            "name": "Bart with Pointer Head pre-trained on arXiv ",
+            "name": "Bart with Deep Pointer Head",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-arxiv-roc-ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-deep-roc",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "Bart with Multi Pointer Head",
+            "model_class": "ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-multi-roc",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
