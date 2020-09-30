@@ -3,7 +3,7 @@
         {
             "name": "Bart with Pointer Head",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-roc-ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-roc-ordering",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
