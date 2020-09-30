@@ -3,7 +3,7 @@
         {
             "name": "Bart with new Pointer Head",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-2-bart-base-roc/checkpoint-1500",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-2-bart-base-roc",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
