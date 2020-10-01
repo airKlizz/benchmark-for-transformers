@@ -44,18 +44,6 @@
             "values": ["kendalltau"]
         },
         {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau2.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltaubis.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/lcs.py",
-            "values": ["rougeL"]
-        },
-        {
             "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/pmr.py",
             "values": ["pmr"]
         }
