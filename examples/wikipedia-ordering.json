@@ -2,7 +2,7 @@
     "scenarios": [
         {
             "name": "Bart",
-            "model_class": "ordering",
+            "model_class": "ordering multi",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-bart-base-wikipedia",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
@@ -15,7 +15,7 @@
             "device": "cuda"
         },
         {
-            "name": "Bart backup",
+            "name": "Bart backup multi",
             "model_class": "ordering",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-bart-base-wikipedia-with-0-5-noise",
             "tokenizer_name": "facebook/bart-base",
