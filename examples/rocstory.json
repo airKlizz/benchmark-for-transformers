@@ -31,7 +31,7 @@
         {
             "name": "Bart with Multi Pointer Head",
             "model_class": "ordering multi",
-            "model_name": "/data/experiments/rcalizzano/Ordering/trained-model/bart-base-roc-ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-roc-ordering",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
