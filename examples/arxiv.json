@@ -19,7 +19,10 @@
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/arxiv_ordering.py",
         "split": "test",
         "x_column_name": ["shuffled_sentences"],
-        "y_column_name": "label"
+        "y_column_name": "label",
+        "init_kwargs": {
+            "cache_dir": "/data/experiments/rcalizzano/cache"
+        }
     },
     "metrics": [
         {
