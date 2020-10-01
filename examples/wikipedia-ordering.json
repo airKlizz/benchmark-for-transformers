@@ -3,7 +3,7 @@
         {
             "name": "Bart",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia-with-noise/checkpoint-162500",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-bart-base-wikipedia",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -17,7 +17,7 @@
         {
             "name": "Bart backup",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-wikipedia/backup_182500",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-bart-base-wikipedia-with-0-5-noise",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -31,7 +31,7 @@
     ],
     "dataset": {
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/wikipedia_ordering.py",
-        "split": "test[:1000]",
+        "split": "test[:100]",
         "x_column_name": ["shuffled_sentences", "title", "section_title"],
         "y_column_name": "label",
         "init_kwargs": {
