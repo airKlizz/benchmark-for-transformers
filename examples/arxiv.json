@@ -1,9 +1,51 @@
 {
     "scenarios": [
         {
-            "name": "Bart with Pointer Head",
+            "name": "Old Bart with Pointer Head",
+            "model_class": "ordering multi",
+            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-arxiv-ordering",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "Bart with Simple Pointer Head",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base/checkpoint-83000",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-simple-arxiv",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "Bart with Deep Pointer Head",
+            "model_class": "ordering deep",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-deep-arxiv",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "Bart with Multi Pointer Head",
+            "model_class": "ordering multi",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-multi-arxiv",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -27,14 +69,6 @@
     "metrics": [
         {
             "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltaubis.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau_scipy.py",
             "values": ["kendalltau"]
         },
         {
