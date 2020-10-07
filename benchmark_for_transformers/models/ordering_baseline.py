@@ -65,28 +65,11 @@ class OrderingBaselineModel(Model):
             input_ids.append(elem["input_ids"])
             attention_mask.append(elem["attention_mask"])
 
-        print(
-            f"""
-        Order inputs:
-        
-        - input_ids: {input_ids}
-        - attention_mask: {attention_mask}
-        - decoder_first_sequence_ids: {decoder_first_sequence_ids}
-        """
-        )
-
         outputs = self.model.order(
             input_ids=torch.tensor(input_ids).to(self.device),
             attention_mask=torch.tensor(attention_mask).to(self.device),
             decoder_first_sequence_ids=decoder_first_sequence_ids,
             **self.ordering_parameters,
-        )
-        print(
-            f"""
-        outputs:
-
-        - predictions: {outputs}
-        """
         )
 
         for output, sequences in zip(outputs, x):
