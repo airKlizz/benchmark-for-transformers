@@ -14,10 +14,10 @@ from .model import Model
 from .models.classification import ClassificationModel
 from .models.ner import NerModel
 from .models.ordering import OrderingModel
+from .models.ordering_baseline import OrderingBaselineModel
 from .models.ordering_deep import OrderingModelDeep
 from .models.ordering_multi import OrderingModelMulti
 from .models.ordering_with_title import OrderingModelWithTitle
-from .models.ordering_baseline import OrderingBaselineModel
 from .models.summarization import SummarizationModel
 
 ALL_MODEL_CLASS = {

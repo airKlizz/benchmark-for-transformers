@@ -1,9 +1,9 @@
 import torch
 
 from ..model import Model
-
 from .utils.glove import GloveTokenizer
 from .utils.hier_attn import HierarchicalAttentionNetworksForSequenceOrdering
+
 
 class OrderingBaselineModel(Model):
     """
@@ -43,7 +43,9 @@ class OrderingBaselineModel(Model):
 
     def _predict(self, x):
         x = x[0]
-        decoder_first_sequence_ids = self.tokenizer("start")["input_ids"][0]
+        decoder_first_sequence_ids = self.tokenizer(
+            "start", max_length=self.tokenizer.max_length, padding="max_length", truncation=True,
+        )["input_ids"][0]
         max_num_seq = max([len(sentences) for sentences in x])
         encoder_inputs = [
             self.tokenizer(
@@ -63,13 +65,15 @@ class OrderingBaselineModel(Model):
             input_ids.append(elem["input_ids"])
             attention_mask.append(elem["attention_mask"])
 
-        print(f"""
+        print(
+            f"""
         Order inputs:
         
         - input_ids: {input_ids}
         - attention_mask: {attention_mask}
         - decoder_first_sequence_ids: {decoder_first_sequence_ids}
-        """)
+        """
+        )
 
         outputs = self.model.order(
             input_ids=torch.tensor(input_ids).to(self.device),
@@ -77,11 +81,13 @@ class OrderingBaselineModel(Model):
             decoder_first_sequence_ids=decoder_first_sequence_ids,
             **self.ordering_parameters,
         )
-        print(f"""
+        print(
+            f"""
         outputs:
 
         - predictions: {outputs}
-        """)
+        """
+        )
 
         for output, sequences in zip(outputs, x):
             assert len(output) == len(sequences), f"sequences: {sequences} - output: {output}"
