@@ -17,6 +17,7 @@ from .models.ordering import OrderingModel
 from .models.ordering_deep import OrderingModelDeep
 from .models.ordering_multi import OrderingModelMulti
 from .models.ordering_with_title import OrderingModelWithTitle
+from .models.ordering_baseline import OrderingBaselineModel
 from .models.summarization import SummarizationModel
 
 ALL_MODEL_CLASS = {
@@ -27,6 +28,7 @@ ALL_MODEL_CLASS = {
     "ordering with title": OrderingModelWithTitle,
     "ordering deep": OrderingModelDeep,
     "ordering multi": OrderingModelMulti,
+    "ordering baseline": OrderingBaselineModel,
 }
 
 

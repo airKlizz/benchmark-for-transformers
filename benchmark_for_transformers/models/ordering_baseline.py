@@ -1,5 +1,7 @@
 from ..model import Model
 
+from .utils.glove import GloveTokenizer
+from .utils.hier_attn import HierarchicalAttentionNetworksForSequenceOrdering
 
 class OrderingBaselineModel(Model):
     """
