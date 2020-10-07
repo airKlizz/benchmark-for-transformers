@@ -24,8 +24,6 @@ import os
 import datasets
 import numpy as np
 
-import json
-
 _CITATION = """
 @inproceedings{huang2016visual,
   title={Visual Storytelling},
@@ -74,10 +72,12 @@ class VISTOrdering(datasets.GeneratorBasedBuilder):
 
         return [
             datasets.SplitGenerator(
-                name=datasets.Split.TRAIN, gen_kwargs={"path": os.path.join(data_path, "train.story-in-sequence.json")},
+                name=datasets.Split.TRAIN,
+                gen_kwargs={"path": os.path.join(data_path, "train.story-in-sequence.json")},
             ),
             datasets.SplitGenerator(
-                name=datasets.Split.VALIDATION, gen_kwargs={"path": os.path.join(data_path, "val.story-in-sequence.json")},
+                name=datasets.Split.VALIDATION,
+                gen_kwargs={"path": os.path.join(data_path, "val.story-in-sequence.json")},
             ),
             datasets.SplitGenerator(
                 name=datasets.Split.TEST, gen_kwargs={"path": os.path.join(data_path, "test.story-in-sequence.json")},
@@ -93,7 +93,7 @@ class VISTOrdering(datasets.GeneratorBasedBuilder):
                 sentences = []
                 order = []
                 album_id = []
-                for j in range(i, i+5):
+                for j in range(i, i + 5):
                     annotation = annotations[j][0]
                     sentences.append(annotation["original_text"])
                     order.append(annotation["worker_arranged_photo_order"])
@@ -108,7 +108,7 @@ class VISTOrdering(datasets.GeneratorBasedBuilder):
                     _SENTENCES: sentences,
                     _SHUFFLED_SENTENCES: shuffled_sentences,
                     _LABEL: label,
-                }                
+                }
 
     def shuffle_sentences(self, sentences):
         sentences = np.array(sentences)

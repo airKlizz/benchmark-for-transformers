@@ -38,6 +38,7 @@ Returns:
     tau: The tau statistic,
 """
 
+
 def substitution(X, Y):
 
     assert len(X) == len(Y)
@@ -50,25 +51,28 @@ def substitution(X, Y):
 
     return Y
 
-def get_nb_inv(X): 
-  
+
+def get_nb_inv(X):
+
     nb_inv = 0
-    for i in range(len(X)): 
-        for j in range(i + 1, len(X)): 
-            if (X[i] > X[j]): 
+    for i in range(len(X)):
+        for j in range(i + 1, len(X)):
+            if X[i] > X[j]:
                 nb_inv += 1
-  
-    return nb_inv 
+
+    return nb_inv
+
 
 def kendalltau(X, Y):
 
     new_Y = substitution(X, Y)
     nb_inv = get_nb_inv(new_Y)
     n = len(X)
-    binomial_coefficient = n*(n-1)/2
-    tau = 1 - 2*nb_inv/binomial_coefficient
+    binomial_coefficient = n * (n - 1) / 2
+    tau = 1 - 2 * nb_inv / binomial_coefficient
 
     return tau
+
 
 class KendallTauByHand(datasets.Metric):
     def _info(self):
@@ -82,7 +86,9 @@ class KendallTauByHand(datasets.Metric):
                     "references": datasets.Sequence(datasets.Value("int8")),
                 }
             ),
-            codebase_urls=["https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering/blob/master/topological_sort.py#L91-L105"],
+            codebase_urls=[
+                "https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering/blob/master/topological_sort.py#L91-L105"
+            ],
             reference_urls=["https://www.aclweb.org/anthology/J06-4002/"],
         )
 
@@ -90,9 +96,7 @@ class KendallTauByHand(datasets.Metric):
         result = {"tau": np.array([])}
 
         for prediction, reference in zip(predictions, references):
-            tau = kendalltau(
-                X=prediction, Y=reference
-            )
+            tau = kendalltau(X=prediction, Y=reference)
             result["tau"] = np.append(result["tau"], tau)
 
         result["tau"] = result["tau"].mean()

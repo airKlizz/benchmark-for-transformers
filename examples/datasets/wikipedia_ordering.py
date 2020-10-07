@@ -20,11 +20,10 @@ from __future__ import absolute_import, division, print_function
 
 import json
 import os
+from statistics import mean
 
 import datasets
 import numpy as np
-
-from statistics import mean
 
 _CITATION = """
 """
@@ -32,7 +31,7 @@ _CITATION = """
 _DESCRIPTION = """
 Dataset for sentence ordering using text from wikipedia."""
 
-#_PATH = "datasets/data/enwiki"
+# _PATH = "datasets/data/enwiki"
 _URL = "https://drive.google.com/uc?export=download&id=1ikeIUzxy0FgjpsbNexQQVbqbpZ0HzUDJ"
 
 _TITLE = "title"
@@ -68,12 +67,18 @@ class WikipediaOrdering(datasets.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager):
         """Returns SplitGenerators."""
         data_path = dl_manager.download_and_extract(_URL)
-        #data_path = _PATH
+        # data_path = _PATH
 
         return [
-            datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={"path": os.path.join(data_path, "enwiki/train.json")},),
-            datasets.SplitGenerator(name=datasets.Split.VALIDATION, gen_kwargs={"path": os.path.join(data_path, "enwiki/valid.json")},),
-            datasets.SplitGenerator(name=datasets.Split.TEST, gen_kwargs={"path": os.path.join(data_path, "enwiki/test.json")},),
+            datasets.SplitGenerator(
+                name=datasets.Split.TRAIN, gen_kwargs={"path": os.path.join(data_path, "enwiki/train.json")},
+            ),
+            datasets.SplitGenerator(
+                name=datasets.Split.VALIDATION, gen_kwargs={"path": os.path.join(data_path, "enwiki/valid.json")},
+            ),
+            datasets.SplitGenerator(
+                name=datasets.Split.TEST, gen_kwargs={"path": os.path.join(data_path, "enwiki/test.json")},
+            ),
         ]
 
     def _generate_examples(self, path=None):
@@ -82,8 +87,8 @@ class WikipediaOrdering(datasets.GeneratorBasedBuilder):
             i = -1
             for line in f:
                 article = json.loads(line)
-                title = article['title']
-                for section_title, section_text in zip(article['section_titles'], article['section_texts']):
+                title = article["title"]
+                for section_title, section_text in zip(article["section_titles"], article["section_texts"]):
                     if section_title in ["See also", "References", "Further reading", "External links"]:
                         continue
                     sentences = section_text.split("\n\n")
@@ -91,7 +96,7 @@ class WikipediaOrdering(datasets.GeneratorBasedBuilder):
                     if len(sentences) < 3:
                         continue
                     if len(sentences) >= 15:
-                        continue 
+                        continue
                     mean_len = mean([len(sentence) for sentence in sentences])
                     if mean_len < 30:
                         continue

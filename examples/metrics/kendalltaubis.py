@@ -38,21 +38,23 @@ Returns:
     tau: The tau statistic,
 """
 
+
 def kendalltau(X, Y):
-        '''
+    """
         It calculates the number of inversions required by the predicted 
         order to reach the correct order.
-        '''
-        pred_pairs, gold_pairs = [], []
-        for i in range(len(Y)):
-            for j in range(i+1, len(Y)):
-                pred_pairs.append((Y[i], Y[j]))
-                gold_pairs.append((X[i], X[j]))
-        common = len(set(pred_pairs).intersection(set(gold_pairs)))
-        uncommon = len(gold_pairs) - common
-        tau = 1 - (2*(uncommon/len(gold_pairs)))
+        """
+    pred_pairs, gold_pairs = [], []
+    for i in range(len(Y)):
+        for j in range(i + 1, len(Y)):
+            pred_pairs.append((Y[i], Y[j]))
+            gold_pairs.append((X[i], X[j]))
+    common = len(set(pred_pairs).intersection(set(gold_pairs)))
+    uncommon = len(gold_pairs) - common
+    tau = 1 - (2 * (uncommon / len(gold_pairs)))
 
-        return tau
+    return tau
+
 
 class KendallTauShrimai(datasets.Metric):
     def _info(self):
@@ -66,7 +68,9 @@ class KendallTauShrimai(datasets.Metric):
                     "references": datasets.Sequence(datasets.Value("int8")),
                 }
             ),
-            codebase_urls=["https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering/blob/master/topological_sort.py#L91-L105"],
+            codebase_urls=[
+                "https://github.com/shrimai/Topological-Sort-for-Sentence-Ordering/blob/master/topological_sort.py#L91-L105"
+            ],
             reference_urls=["https://www.aclweb.org/anthology/J06-4002/"],
         )
 
@@ -74,9 +78,7 @@ class KendallTauShrimai(datasets.Metric):
         result = {"tau": np.array([])}
 
         for prediction, reference in zip(predictions, references):
-            tau = kendalltau(
-                X=prediction, Y=reference
-            )
+            tau = kendalltau(X=prediction, Y=reference)
             result["tau"] = np.append(result["tau"], tau)
 
         result["tau"] = result["tau"].mean()

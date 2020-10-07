@@ -35,7 +35,9 @@ class OrderingModelWithTitle(Model):
         x = x[0]
 
         if len(x) != 1:
-            raise ValueError("Batch size must be equal to 1 for OrderingModelWithTitle because the decoder_start_token_ids change for every examples")
+            raise ValueError(
+                "Batch size must be equal to 1 for OrderingModelWithTitle because the decoder_start_token_ids change for every examples"
+            )
 
         pt_batch = self.tokenizer(
             [" </s><s> ".join(sequences) + " </s><s>" for sequences in x],
@@ -47,7 +49,9 @@ class OrderingModelWithTitle(Model):
         decoder_start_token_ids = self.tokenizer(title + " " + section_title + " ")
         decoder_start_token_ids = decoder_start_token_ids["input_ids"]
 
-        print(f"Prediction of Ordering with title. Title: {title} {section_title}. decoder_start_token_ids: {decoder_start_token_ids}")
+        print(
+            f"Prediction of Ordering with title. Title: {title} {section_title}. decoder_start_token_ids: {decoder_start_token_ids}"
+        )
 
         outputs = self.model.order(
             input_ids=pt_batch["input_ids"].to(self.device),

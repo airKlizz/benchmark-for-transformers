@@ -18,13 +18,12 @@
 
 from __future__ import absolute_import, division, print_function
 
+import csv
 import json
 import os
 
 import datasets
 import numpy as np
-
-import csv
 
 _CITATION = """
 @inproceedings{mostafazadeh-etal-2016-corpus,
@@ -88,7 +87,8 @@ class ROCOrdering(datasets.GeneratorBasedBuilder):
                 name=datasets.Split.TRAIN, gen_kwargs={"path": os.path.join(data_path, "ROCStory.train.csv")},
             ),
             datasets.SplitGenerator(
-                name=datasets.Split.VALIDATION, gen_kwargs={"path": os.path.join(data_path, "ROCStory.validation.csv")},
+                name=datasets.Split.VALIDATION,
+                gen_kwargs={"path": os.path.join(data_path, "ROCStory.validation.csv")},
             ),
             datasets.SplitGenerator(
                 name=datasets.Split.TEST, gen_kwargs={"path": os.path.join(data_path, "ROCStory.test.csv")},
@@ -98,7 +98,7 @@ class ROCOrdering(datasets.GeneratorBasedBuilder):
     def _generate_examples(self, path=None):
         """Yields examples."""
         with open(path, "r") as f:
-            csv_reader = csv.reader(f, delimiter=',')
+            csv_reader = csv.reader(f, delimiter=",")
             for i, elems in enumerate(csv_reader):
                 if len(elems) != 7:
                     print(f"Example skipped: {len(elems)}")
@@ -110,7 +110,7 @@ class ROCOrdering(datasets.GeneratorBasedBuilder):
                     _SENTENCES: sentences,
                     _SHUFFLED_SENTENCES: shuffled_sentences,
                     _LABEL: label,
-                }                
+                }
 
     def shuffle_sentences(self, sentences):
         sentences = np.array(sentences)

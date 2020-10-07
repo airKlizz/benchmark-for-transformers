@@ -25,7 +25,14 @@ class OrderingModelDeep(Model):
         ordering_parameters={},
     ):
         super().__init__(
-            name, BartForSequenceOrderingWithDeepPointer, model_name, tokenizer_name, device, quantization, onnx, onnx_convert_kwargs
+            name,
+            BartForSequenceOrderingWithDeepPointer,
+            model_name,
+            tokenizer_name,
+            device,
+            quantization,
+            onnx,
+            onnx_convert_kwargs,
         )
         self.ordering_parameters = ordering_parameters
 

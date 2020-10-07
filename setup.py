@@ -13,7 +13,7 @@ setup(
     url="https://github.com/airKlizz/benchmark-for-transformers",
     download_url="https://github.com/airKlizz/benchmark-for-transformers/archive/v_0.1.tar.gz",
     packages=find_packages(),
-    install_requires=["transformers>=3.1.0", "datasets", "torch", "torchvision", "onnx", "onnxruntime"],
+    install_requires=["transformers>=3.0.0", "datasets", "torch", "torchvision", "onnx", "onnxruntime"],
     entry_points={"console_scripts": ["benchmark-for-transformers-run=benchmark_for_transformers.run_cli:main"]},
     python_requires=">=3.6.0",
     classifiers=[
