@@ -1,3 +1,5 @@
+import torch
+
 from ..model import Model
 
 from .utils.glove import GloveTokenizer
@@ -61,21 +63,26 @@ class OrderingBaselineModel(Model):
             input_ids.append(elem["input_ids"])
             attention_mask.append(elem["attention_mask"])
 
+        print(f"""
+        Order inputs:
+        
+        - input_ids: {input_ids}
+        - attention_mask: {attention_mask}
+        - decoder_first_sequence_ids: {decoder_first_sequence_ids}
+        """)
+
         outputs = self.model.order(
             input_ids=torch.tensor(input_ids).to(self.device),
             attention_mask=torch.tensor(attention_mask).to(self.device),
             decoder_first_sequence_ids=decoder_first_sequence_ids,
             **self.ordering_parameters,
         )
+        print(f"""
+        outputs:
+
+        - predictions: {outputs}
+        """)
+
         for output, sequences in zip(outputs, x):
-            output.remove(max(output))
-            for i in range(len(sequences)):
-                if i not in output:
-                    output.append(i)
-            while max(output) > len(sequences) - 1:
-                print(
-                    f"INFO: Before second verification: sequences: {len(sequences)} - output: {len(output)} --- \n output:\n{output}"
-                )
-                output.remove(max(output))
             assert len(output) == len(sequences), f"sequences: {sequences} - output: {output}"
         return outputs
