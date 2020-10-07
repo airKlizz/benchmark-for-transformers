@@ -53,7 +53,7 @@ class OrderingBaselineModel(Model):
                 seq_padding="max_num_seq",
                 seq_truncation=True,
             )
-            for sentences in example_batch["shuffled_sentences"]
+            for sentences in x
         ]
         input_ids = []
         attention_mask = []
