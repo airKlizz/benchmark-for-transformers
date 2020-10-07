@@ -1,16 +1,16 @@
-import json
 from pathlib import Path
+import json
 
 import torch
 import torch.nn as nn
 from torch.nn import CrossEntropyLoss
-from torch.nn.utils.rnn import (PackedSequence, pack_padded_sequence,
-                                pad_packed_sequence)
-from transformers.configuration_bart import BartConfig
-from transformers.configuration_utils import PretrainedConfig
-from transformers.modeling_bart import DecoderLayer, EncoderLayer, LayerNorm
-from transformers.modeling_utils import PreTrainedModel
 
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence, PackedSequence
+
+from transformers.configuration_bart import BartConfig
+from transformers.modeling_bart import EncoderLayer, DecoderLayer, LayerNorm
+from transformers.modeling_utils import PreTrainedModel
+from transformers.configuration_utils import PretrainedConfig
 try:
     from transformers.modeling_bart import Attention
 except:
@@ -24,16 +24,13 @@ CONFIG_NAME = "model_config.json"
 EMBEDDING_NAME = "embedding.pt"
 WEIGHTS_NAME = "pytorch_model.bin"
 
-
 def invert_mask(attention_mask):
     """Turns 1->0, 0->1, False->True, True-> False"""
     return attention_mask.eq(0)
 
-
 def fill_with_neg_inf(t):
     """FP16-compatible function that fills a input_ids with -inf."""
     return t.float().fill_(float("-inf")).type_as(t)
-
 
 def create_causal_mask(tgt_len, dtype, device):
     tmp = fill_with_neg_inf(torch.zeros(tgt_len, tgt_len))
@@ -44,12 +41,21 @@ def create_causal_mask(tgt_len, dtype, device):
 
 
 class WordEncoder(nn.Module):
+  
     def __init__(
-        self, hidden_size, embedding_size, embedding, num_layers=2, num_attn_heads=8, attn_bias=False, dropout=0.0
+        self, 
+        hidden_size, 
+        embedding_size, 
+        embedding, 
+        num_layers=2, 
+        num_attn_heads=8, 
+        attn_bias=False, 
+        dropout=0.0
     ):
 
+      
         super().__init__()
-
+        
         # Basic network params
         self.hidden_size = hidden_size
         self.embedding_size = embedding_size
@@ -57,10 +63,10 @@ class WordEncoder(nn.Module):
         self.num_attn_heads = num_attn_heads
         self.attn_bias = attn_bias
         self.dropout = dropout
-
+        
         # Embedding layer that will be shared with Decoder
         self.embedding = embedding
-
+        
         # Bidirectional GRU
         self.lstm = nn.LSTM(
             input_size=embedding_size,
@@ -73,9 +79,13 @@ class WordEncoder(nn.Module):
 
         # Multi-Head attention
         self.attention = Attention(
-            embed_dim=2 * hidden_size, num_heads=num_attn_heads, dropout=dropout, bias=attn_bias,
+            embed_dim=2*hidden_size,
+            num_heads=num_attn_heads,
+            dropout=dropout,
+            bias=attn_bias,
         )
-
+        
+        
     def forward(self, input_ids, attention_mask=None):
 
         """
@@ -98,40 +108,33 @@ class WordEncoder(nn.Module):
 
         if attention_mask is not None:
             attention_mask = invert_mask(attention_mask)
-
+        
         # Convert input_sequence to word embeddings
         word_embeddings = self.embedding(input_ids)
         assert word_embeddings.size() == (bsz, seq_len, self.embedding_size), word_embeddings.size()
-
+        
         # Run the packed embeddings through the LSTM
         outputs, hidden = self.lstm(word_embeddings)
         outputs = (outputs.data).permute(1, 0, 2)
-        assert outputs.size() == (seq_len, bsz, 2 * self.hidden_size), outputs.size()
+        assert outputs.size() == (seq_len, bsz, 2*self.hidden_size), outputs.size()
 
         # Random query (from https://doi.org/10.1609/aaai.v33i01.33017184)
         torch.manual_seed(SEED)
-        self.random_query = torch.rand(seq_len, 1, 2 * self.hidden_size).expand(-1, bsz, -1).to(device)
+        self.random_query = torch.rand(seq_len, 1, 2*self.hidden_size).expand(-1, bsz, -1).to(device)
 
         # Run attention
         attn_output, attn_weights = self.attention(
-            query=outputs.new(self.random_query), key=outputs, key_padding_mask=attention_mask, output_attentions=True
+            query=outputs.new(self.random_query),
+            key=outputs,
+            key_padding_mask=attention_mask,
+            output_attentions=True
         )
-        assert attn_output.size() == (
-            seq_len,
-            bsz,
-            2 * self.hidden_size,
-        ), f"{attn_output.size()} != {(seq_len, bsz, 2*self.hidden_size)}"
-        assert attn_weights.size() == (
-            bsz,
-            self.num_attn_heads,
-            seq_len,
-            seq_len,
-        ), f"{attn_weights.size()} != {(bsz, self.num_attn_heads, seq_len, seq_len)}"
+        assert attn_output.size() == (seq_len, bsz, 2*self.hidden_size), f"{attn_output.size()} != {(seq_len, bsz, 2*self.hidden_size)}"
+        assert attn_weights.size() == (bsz, self.num_attn_heads, seq_len, seq_len), f"{attn_weights.size()} != {(bsz, self.num_attn_heads, seq_len, seq_len)}"
 
         output = attn_output.permute(1, 0, 2).contiguous()
-
+        
         return output[:, 0, :].squeeze(1), output, attn_weights
-
 
 class PointerHead(nn.Module):
     """Head for pointer ordering task."""
@@ -150,7 +153,9 @@ class PointerHead(nn.Module):
         return tensor.contiguous().view(seq_len, bsz, self.embed_dim).transpose(0, 1)
 
     def forward(
-        self, query, key,
+        self,
+        query,
+        key,
     ):
         """Input shape: Time(SeqLen) x Batch x Channel"""
         tgt_len, bsz, embed_dim = query.size()
@@ -173,17 +178,8 @@ class PointerHead(nn.Module):
 
 
 class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
-    def __init__(
-        self,
-        embedding,
-        rnn_hidden_size,
-        rnn_num_layers,
-        num_attn_heads,
-        num_encoder_layers,
-        num_decoder_layers,
-        ffn_dim,
-        dropout,
-    ):
+
+    def __init__(self, embedding, rnn_hidden_size, rnn_num_layers, num_attn_heads, num_encoder_layers, num_decoder_layers, ffn_dim, dropout):
 
         super().__init__(PretrainedConfig())
         self.embedding = embedding
@@ -197,19 +193,19 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
             "num_encoder_layers": num_encoder_layers,
             "num_decoder_layers": num_decoder_layers,
             "ffn_dim": ffn_dim,
-            "dropout": dropout,
+            "dropout": dropout
         }
 
         self.word_encoder = WordEncoder(
-            hidden_size=rnn_hidden_size,
-            embedding_size=self.word_embed_dim,
-            embedding=embedding,
-            num_layers=rnn_num_layers,
-            num_attn_heads=num_attn_heads,
-            dropout=dropout,
+            hidden_size=rnn_hidden_size, 
+            embedding_size=self.word_embed_dim, 
+            embedding=embedding, 
+            num_layers=rnn_num_layers, 
+            num_attn_heads=num_attn_heads, 
+            dropout=0.0
         )
 
-        self.sentence_embed_dim = 2 * rnn_hidden_size
+        self.sentence_embed_dim = 2*rnn_hidden_size
 
         self.config = BartConfig(
             d_model=self.sentence_embed_dim,
@@ -239,8 +235,8 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
     def save_pretrained(self, path):
         path = Path(path)
         path.mkdir(parents=True, exist_ok=True)
-
-        with open(path / CONFIG_NAME, "w") as f:
+        
+        with open(path / CONFIG_NAME, 'w') as f:
             json.dump(self.model_config, f)
 
         torch.save(self.embedding.weight, path / EMBEDDING_NAME)
@@ -251,7 +247,7 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
     def from_pretrained(cls, path):
         path = Path(path)
 
-        with open(path / CONFIG_NAME, "r") as f:
+        with open(path / CONFIG_NAME, 'r') as f:
             config = json.load(f)
 
         weight = torch.load(path / EMBEDDING_NAME)
@@ -262,13 +258,14 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
 
         return model
 
+
     def forward(
         self,
         input_ids,
         decoder_input_ids,
         attention_mask=None,
         decoder_attention_mask=None,
-        last_encoder_hidden_states=None,
+        last_encoder_hidden_states= None,
         past_key_values=None,
         labels=None,
         use_cache=None,
@@ -284,6 +281,16 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
                 
         """
 
+        '''print(f"""
+        Forward inputs:
+
+        - input_ids:\n{input_ids}
+        - decoder_input_ids:\n{decoder_input_ids}
+        - attention_mask:\n{attention_mask}
+        - decoder_attention_mask:\n{decoder_attention_mask}
+        - labels:\n{labels}
+        """)'''
+
         bsz, num_seq, seq_len = input_ids.size()
         assert decoder_input_ids.size(0) == bsz
         assert decoder_input_ids.size(2) == seq_len
@@ -292,7 +299,7 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
         use_cache = use_cache if use_cache is not None else self.config.use_cache
 
         if last_encoder_hidden_states is None:
-
+        
             """ Sentence Encoder """
 
             # Word Encoder
@@ -303,9 +310,7 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
             attention_mask = attention_mask.view(bsz, num_seq, seq_len)
 
             # Prepare inputs
-            attention_mask = (
-                attention_mask.sum(-1) == 1
-            )  # == 1 means there is only the [CLS] token which means it is a pad sequence
+            attention_mask = attention_mask.sum(-1) == 1 # == 1 means there is only the [CLS] token which means it is a pad sequence
             x = x.transpose(0, 1)
             assert x.size() == (num_seq, bsz, self.sentence_embed_dim), x.size()
             assert attention_mask.size() == (bsz, num_seq), attention_mask.size()
@@ -315,20 +320,16 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
             for encoder_layer in self.encoder_layers:
                 x, attn = encoder_layer(x, attention_mask)
             last_encoder_hidden_states = x.transpose(0, 1)
-            assert last_encoder_hidden_states.size() == (
-                bsz,
-                num_seq,
-                self.sentence_embed_dim,
-            ), last_encoder_hidden_state.size()
+            assert last_encoder_hidden_states.size() == (bsz, num_seq, self.sentence_embed_dim), last_encoder_hidden_state.size()
+
+            
 
         else:
 
-            attention_mask = (
-                attention_mask.sum(-1) == 1
-            )  # == 1 means there is only the [CLS] token which means it is a pad sequence
+            attention_mask = attention_mask.sum(-1) == 1 # == 1 means there is only the [CLS] token which means it is a pad sequence
             assert attention_mask.size() == (bsz, num_seq), attention_mask.size()
 
-        """print(f"last_encoder_hidden_states: {last_encoder_hidden_states.size()}\n\n{last_encoder_hidden_states[0]}")"""
+        '''print(f"last_encoder_hidden_states: {last_encoder_hidden_states.size()}\n\n{last_encoder_hidden_states[0]}")'''
 
         """ Sentence Decoder """
 
@@ -340,19 +341,15 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
         decoder_attention_mask = decoder_attention_mask.view(bsz, decoder_num_seq, seq_len)
 
         # Prepare decoder inputs
-        decoder_attention_mask = (
-            decoder_attention_mask.sum(-1) == 1
-        )  # == 1 means there is only the [CLS] token which means it is a pad sequence
+        decoder_attention_mask = decoder_attention_mask.sum(-1) == 1 # == 1 means there is only the [CLS] token which means it is a pad sequence
         assert decoder_attention_mask.size() == (bsz, decoder_num_seq), decoder_attention_mask.size()
         x = x.transpose(0, 1)
         encoder_hidden_states = last_encoder_hidden_states.transpose(0, 1)
         if not use_cache:
-            decoder_causal_mask = create_causal_mask(
-                decoder_num_seq, decoder_input_ids.dtype, decoder_input_ids.device
-            )
+            decoder_causal_mask = create_causal_mask(decoder_num_seq, decoder_input_ids.dtype, decoder_input_ids.device)
         else:
             decoder_causal_mask = None
-
+        
         # Run Sentence Decoder layers
         next_decoder_cache = []
         for idx, decoder_layer in enumerate(self.decoder_layers):
@@ -368,18 +365,15 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
             if use_cache:
                 next_decoder_cache.append(layer_past.copy())
         last_decoder_hidden_states = x.transpose(0, 1)
-        assert last_decoder_hidden_states.size() == (
-            bsz,
-            decoder_num_seq,
-            self.sentence_embed_dim,
-        ), last_decoder_hidden_states.size()
+        assert last_decoder_hidden_states.size() == (bsz, decoder_num_seq, self.sentence_embed_dim), last_decoder_hidden_states.size()
 
         next_cache = next_decoder_cache if use_cache else None
 
         """ Pointer Head """
 
         logits = self.pointer_head(
-            query=last_decoder_hidden_states.transpose(1, 0), key=last_encoder_hidden_states.transpose(1, 0),
+            query=last_decoder_hidden_states.transpose(1, 0),
+            key=last_encoder_hidden_states.transpose(1, 0),
         )
         assert logits.size() == (bsz, decoder_num_seq, num_seq)
 
@@ -391,14 +385,16 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
             assert labels.size(1) == decoder_num_seq
             loss_fct = CrossEntropyLoss()
             loss = loss_fct(logits.view(-1, logits.size(-1)), labels.view(-1))
-
+            '''print(f"""
+            
+        - logits:\n{logits}
+        - loss: {loss}
+            """)'''
             outputs = (loss,) + outputs
 
         return outputs
 
-    def order(
-        self, input_ids, decoder_first_sequence_ids, pad_tok=1, num_beams=1, attention_mask=None, use_cache=None
-    ):
+    def order(self, input_ids, decoder_first_sequence_ids, pad_tok=1, num_beams=1, attention_mask=None, use_cache=None):
 
         use_cache = use_cache if use_cache is not None else self.config.use_cache
 
@@ -412,11 +408,10 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
 
         if attention_mask is None:
             attention_mask = input_ids.new_ones(input_ids.shape)
+        
+        num_seq_per_batch = (decoder_attention_mask.sum(-1) == 1).eq(False).sum(-1).tolist()
 
-        num_seq_per_batch = (attention_mask.sum(-1) == 1).eq(False).sum(-1).tolist()
-        print("num_seq_per_batch", num_seq_per_batch)
-
-        decoder_input_ids = torch.tensor(decoder_first_sequence_ids).to(input_ids.device).repeat(bsz, 1, 1)
+        decoder_input_ids = torch.tensor(decoder_first_sequence_ids).repeat(bsz, 1, 1)
 
         if num_beams > 1:
             raise ValueError("Beam search not implemented yet.")
@@ -455,11 +450,11 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
                         break
 
                 assert prediction_per_batch[idx] != -1
+                
+
 
             # Add sentences to decoder_input_ids
-            decoder_input_ids = torch.cat(
-                (decoder_input_ids, input_ids[torch.arange(bsz), prediction_per_batch].unsqueeze(1)), dim=1
-            )
+            decoder_input_ids = torch.cat((decoder_input_ids, input_ids[torch.arange(bsz), prediction_per_batch].unsqueeze(1)), dim=1)
 
             for idx in range(bsz):
                 if len(predictions_per_batch[idx]) == num_seq_per_batch[idx]:
@@ -467,5 +462,5 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
 
             if done_per_batch.all():
                 break
-
+        
         return predictions_per_batch
