@@ -309,7 +309,6 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
             decoder_causal_mask = None
         
         # Run Sentence Decoder layers
-        next_decoder_cache = []
         for idx, decoder_layer in enumerate(self.decoder_layers):
             layer_state = past_key_values[idx] if past_key_values is not None else None
             x, layer_self_attn, layer_past = decoder_layer(
@@ -320,12 +319,9 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
                 layer_state=layer_state,
                 causal_mask=decoder_causal_mask,
             )
-            if use_cache:
-                next_decoder_cache.append(layer_past.copy())
+            
         last_decoder_hidden_states = x.transpose(0, 1)
         assert last_decoder_hidden_states.size() == (bsz, decoder_num_seq, self.sentence_embed_dim), last_decoder_hidden_states.size()
-
-        next_cache = next_decoder_cache if use_cache else None
 
         """ Pointer Head """
 
@@ -347,11 +343,8 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
 
         return outputs
 
-    def order(self, input_ids, decoder_first_sequence_ids, pad_tok=1, num_beams=1, attention_mask=None, use_cache=None):
+    def order(self, input_ids, decoder_first_sequence_ids, pad_tok=1, num_beams=1, attention_mask=None):
 
-        use_cache = use_cache if use_cache is not None else self.config.use_cache
-
-        assert isinstance(use_cache, bool), "`use_cache` should be a boolean."
         assert isinstance(num_beams, int) and num_beams > 0, "`num_beams` should be a strictly positive integer."
         assert input_ids is not None, "Input_ids is not defined."
         assert input_ids.dim() == 3, "Input prompt should be of shape (batch, num_seq, seq_len)."
@@ -381,7 +374,7 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
                 "attention_mask": attention_mask,
                 "decoder_attention_mask": decoder_attention_mask,
                 "last_encoder_hidden_states": last_encoder_hidden_states,
-                "use_cache": use_cache,
+                "use_cache": False,
             }
             outputs = self(**model_inputs)
             scores = outputs[0]
