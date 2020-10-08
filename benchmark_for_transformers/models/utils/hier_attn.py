@@ -232,7 +232,6 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
         last_encoder_hidden_states= None,
         past_key_values=None,
         labels=None,
-        use_cache=None,
     ):
 
         """
@@ -254,8 +253,6 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
             attention_mask = input_ids.new_ones(input_ids.size())
         if decoder_attention_mask == None:
             decoder_attention_mask = decoder_input_ids.new_ones(decoder_input_ids.size())
-
-        use_cache = use_cache if use_cache is not None else self.config.use_cache
 
         if last_encoder_hidden_states is None:
         
@@ -303,10 +300,7 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
         assert decoder_attention_mask.size() == (bsz, decoder_num_seq), decoder_attention_mask.size()
         x = x.transpose(0, 1)
         encoder_hidden_states = last_encoder_hidden_states.transpose(0, 1)
-        if not use_cache:
-            decoder_causal_mask = create_causal_mask(decoder_num_seq, decoder_input_ids.dtype, decoder_input_ids.device)
-        else:
-            decoder_causal_mask = None
+        decoder_causal_mask = create_causal_mask(decoder_num_seq, decoder_input_ids.dtype, decoder_input_ids.device)
         
         # Run Sentence Decoder layers
         for idx, decoder_layer in enumerate(self.decoder_layers):
@@ -374,7 +368,6 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
                 "attention_mask": attention_mask,
                 "decoder_attention_mask": decoder_attention_mask,
                 "last_encoder_hidden_states": last_encoder_hidden_states,
-                "use_cache": False,
             }
             outputs = self(**model_inputs)
             scores = outputs[0]
