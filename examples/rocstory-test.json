@@ -3,7 +3,7 @@
         {
             "name": "Baseline",
             "model_class": "ordering baseline",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/baseline-roc/",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/baseline-roc-overfit/checkpoint-16000",
             "tokenizer_name": "/data/experiments/rcalizzano/glove_tokenizer/roc",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -16,7 +16,7 @@
     ],
     "dataset": {
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/rocstory_ordering.py",
-        "split": "test[:100]",
+        "split": "train[:100]",
         "x_column_name": ["shuffled_sentences"],
         "y_column_name": "label",
         "init_kwargs": {
