@@ -364,7 +364,7 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
         
         num_seq_per_batch = (attention_mask.sum(-1) == 1).eq(False).sum(-1).tolist()
 
-        decoder_input_ids = torch.tensor(decoder_first_sequence_ids).repeat(bsz, 1, 1)
+        decoder_input_ids = torch.tensor(decoder_first_sequence_ids).repeat(bsz, 1, 1).to(input_ids.device)
 
         if num_beams > 1:
             raise ValueError("Beam search not implemented yet.")
