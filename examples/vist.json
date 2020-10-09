@@ -15,6 +15,20 @@
             "device": "cuda"
         },
         {
+            "name": "Bart Simple 16",
+            "model_class": "ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-simple-vist",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 16,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
             "name": "Bart Deep",
             "model_class": "ordering deep",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-deep-vist",
@@ -29,6 +43,20 @@
             "device": "cuda"
         },
         {
+            "name": "Bart Deep 16",
+            "model_class": "ordering deep",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-deep-vist",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 16,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
             "name": "Bart Multi",
             "model_class": "ordering multi",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-multi-vist",
@@ -36,6 +64,20 @@
             "init_kwargs": {
                 "ordering_parameters": {
                     "num_beams": 1,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "Bart Multi 16",
+            "model_class": "ordering multi",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-multi-vist",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 16,
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
