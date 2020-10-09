@@ -11,7 +11,7 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         },
         {
@@ -25,7 +25,7 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         },
         {
@@ -39,7 +39,7 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         },
         {
@@ -53,7 +53,7 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         },
         {
@@ -67,7 +67,7 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         },
         {
@@ -81,7 +81,7 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         },
         {
@@ -94,7 +94,7 @@
                     "num_beams": 1
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         }
     ],

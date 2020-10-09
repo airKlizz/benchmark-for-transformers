@@ -358,51 +358,52 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
 
         if num_beams > 1:
             raise ValueError("Beam search not implemented yet.")
+        else:
 
-        last_encoder_hidden_states = None
-        predictions_per_batch = [[] for _ in range(bsz)]
-        done_per_batch = torch.zeros(bsz, dtype=torch.bool)
-        for i in range(num_seq):
+            last_encoder_hidden_states = None
+            predictions_per_batch = [[] for _ in range(bsz)]
+            done_per_batch = torch.zeros(bsz, dtype=torch.bool)
+            for i in range(num_seq):
 
-            decoder_attention_mask = decoder_input_ids.eq(pad_tok).eq(0)
-            model_inputs = {
-                "input_ids": input_ids,
-                "decoder_input_ids": decoder_input_ids,
-                "attention_mask": attention_mask,
-                "decoder_attention_mask": decoder_attention_mask,
-                "last_encoder_hidden_states": last_encoder_hidden_states,
-            }
-            outputs = self(**model_inputs)
-            scores = outputs[0]
-            scores = scores.argsort(-1, descending=True)[:, -1, :]
-            last_encoder_hidden_states = outputs[1]
+                decoder_attention_mask = decoder_input_ids.eq(pad_tok).eq(0)
+                model_inputs = {
+                    "input_ids": input_ids,
+                    "decoder_input_ids": decoder_input_ids,
+                    "attention_mask": attention_mask,
+                    "decoder_attention_mask": decoder_attention_mask,
+                    "last_encoder_hidden_states": last_encoder_hidden_states,
+                }
+                outputs = self(**model_inputs)
+                scores = outputs[0]
+                scores = scores.argsort(-1, descending=True)[:, -1, :]
+                last_encoder_hidden_states = outputs[1]
 
-            prediction_per_batch = scores.new_ones(bsz) * -1
-            for idx in range(bsz):
+                prediction_per_batch = scores.new_ones(bsz) * -1
+                for idx in range(bsz):
 
-                # the batch is already done so the prediction doesn't make sense
-                if done_per_batch[idx]:
-                    prediction_per_batch[idx] = 0
+                    # the batch is already done so the prediction doesn't make sense
+                    if done_per_batch[idx]:
+                        prediction_per_batch[idx] = 0
 
-                # add the best prediction not already ordered
-                for prediction in scores[idx]:
-                    if prediction not in predictions_per_batch[idx]:
-                        prediction_per_batch[idx] = prediction
-                        predictions_per_batch[idx].append(int(prediction))
-                        break
+                    # add the best prediction not already ordered
+                    for prediction in scores[idx]:
+                        if prediction not in predictions_per_batch[idx]:
+                            prediction_per_batch[idx] = prediction
+                            predictions_per_batch[idx].append(int(prediction))
+                            break
 
-                assert prediction_per_batch[idx] != -1
-                
+                    assert prediction_per_batch[idx] != -1
+                    
 
 
-            # Add sentences to decoder_input_ids
-            decoder_input_ids = torch.cat((decoder_input_ids, input_ids[torch.arange(bsz), prediction_per_batch].unsqueeze(1)), dim=1)
+                # Add sentences to decoder_input_ids
+                decoder_input_ids = torch.cat((decoder_input_ids, input_ids[torch.arange(bsz), prediction_per_batch].unsqueeze(1)), dim=1)
 
-            for idx in range(bsz):
-                if len(predictions_per_batch[idx]) == num_seq_per_batch[idx]:
-                    done_per_batch[idx] = True
+                for idx in range(bsz):
+                    if len(predictions_per_batch[idx]) == num_seq_per_batch[idx]:
+                        done_per_batch[idx] = True
 
-            if done_per_batch.all():
-                break
-        
-        return predictions_per_batch
+                if done_per_batch.all():
+                    break
+            
+            return predictions_per_batch
