@@ -324,6 +324,9 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
             key=last_encoder_hidden_states.transpose(1, 0),
         )
         assert logits.size() == (bsz, decoder_num_seq, num_seq)
+        assert attention_mask.size() == (bsz, num_seq)
+        attention_mask = attention_mask.unsqueeze(1).repeat(1, decoder_num_seq, 1)
+        logits = logits.masked_fill(attention_mask, float("-inf"))
 
         outputs = (logits, last_encoder_hidden_states, last_decoder_hidden_states)
 
