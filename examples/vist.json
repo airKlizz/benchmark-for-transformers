@@ -1,9 +1,9 @@
 {
     "scenarios": [
         {
-            "name": "Bart with Pointer Head",
+            "name": "Bart Simple",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-vist-ordering",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-simple-vist",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -15,9 +15,9 @@
             "device": "cuda"
         },
         {
-            "name": "Bart with Pointer Head pre-trained on arXiv ",
-            "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-arxiv-vist-ordering",
+            "name": "Bart Deep",
+            "model_class": "ordering deep",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-deep-vist",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -27,11 +27,38 @@
             },
             "batch_size": 1,
             "device": "cuda"
+        },
+        {
+            "name": "Bart Multi",
+            "model_class": "ordering multi",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-multi-vist",
+            "tokenizer_name": "facebook/bart-base",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1,
+		            "decoder_start_token_ids": [0, 2]
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
+        },
+        {
+            "name": "Baseline",
+            "model_class": "ordering baseline",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/baseline-vist",
+            "tokenizer_name": "/data/experiments/rcalizzano/glove_tokenizer/vist",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1
+                }
+            },
+            "batch_size": 1,
+            "device": "cuda"
         }
     ],
     "dataset": {
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/vist_ordering.py",
-        "split": "test",
+        "split": "test[:100]",
         "x_column_name": ["shuffled_sentences"],
         "y_column_name": "label",
         "init_kwargs": {
@@ -41,14 +68,6 @@
     "metrics": [
         {
             "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltaubis.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau_scipy.py",
             "values": ["kendalltau"]
         },
         {
