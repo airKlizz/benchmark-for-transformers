@@ -72,6 +72,8 @@ class OrderingBaselineModel(Model):
             **self.ordering_parameters,
         )
 
-        for output, sequences in zip(outputs, x):
-            assert len(output) == len(sequences), f"sequences: {sequences} - output: {output}"
+        assert input_ids.size(0) == len(outputs)
+        assert input_ids.size(0) == len(sequences)
+        for i, (output, sequences) in enumerate(zip(outputs, x)):
+            assert len(output) == len(sequences), f"sequences: {sequences}\noutput: {output}\ninput_id: {input_ids[i]}"
         return outputs
