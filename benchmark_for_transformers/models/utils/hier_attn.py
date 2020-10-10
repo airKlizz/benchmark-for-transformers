@@ -353,7 +353,6 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
             attention_mask = input_ids.new_ones(input_ids.shape)
         
         num_seq_per_batch = (attention_mask.sum(-1) == 1).eq(False).sum(-1).tolist()
-        print("Num Seq Per Batch: ", num_seq_per_batch)
 
         decoder_input_ids = torch.tensor(decoder_first_sequence_ids).repeat(bsz, 1, 1).to(input_ids.device)
 
