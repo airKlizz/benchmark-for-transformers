@@ -1,6 +1,19 @@
 {
     "scenarios": [
         {
+            "name": "Baseline",
+            "model_class": "ordering baseline",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/baseline-arxiv",
+            "tokenizer_name": "/data/experiments/rcalizzano/glove_tokenizer/arxiv",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1
+                }
+            },
+            "batch_size": 16,
+            "device": "cuda"
+        },
+        {
             "name": "Old Bart with Pointer Head",
             "model_class": "ordering multi",
             "model_name": "/data/experiments/rcalizzano/Ordering/trained_model/bart-base-arxiv-ordering",
