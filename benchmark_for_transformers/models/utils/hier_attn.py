@@ -385,6 +385,7 @@ class HierarchicalAttentionNetworksForSequenceOrdering(PreTrainedModel):
                     # the batch is already done so the prediction doesn't make sense
                     if done_per_batch[idx]:
                         prediction_per_batch[idx] = 0
+                        continue
 
                     # add the best prediction not already ordered
                     for prediction in scores[idx]:
