@@ -1,9 +1,22 @@
 {
     "scenarios": [
         {
-            "name": "Bart with Pointer Head",
+            "name": "Baseline",
+            "model_class": "ordering baseline",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/baseline-roc",
+            "tokenizer_name": "/data/experiments/rcalizzano/glove_tokenizer/roc",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1
+                }
+            },
+            "batch_size": 16,
+            "device": "cuda"
+        },
+        {
+            "name": "Bart with Simple Pointer Head",
             "model_class": "ordering",
-            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/final-2-bart-base-roc",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-simple-roc",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
                 "ordering_parameters": {
@@ -11,7 +24,7 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         },
         {
@@ -25,7 +38,7 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         },
         {
@@ -39,13 +52,13 @@
 		            "decoder_start_token_ids": [0, 2]
                 }
             },
-            "batch_size": 1,
+            "batch_size": 16,
             "device": "cuda"
         }
     ],
     "dataset": {
         "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/rocstory_ordering.py",
-        "split": "test[:100]",
+        "split": "test",
         "x_column_name": ["shuffled_sentences"],
         "y_column_name": "label",
         "init_kwargs": {
@@ -55,14 +68,6 @@
     "metrics": [
         {
             "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltaubis.py",
-            "values": ["kendalltau"]
-        },
-        {
-            "metric_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/metrics/kendalltau_scipy.py",
             "values": ["kendalltau"]
         },
         {
