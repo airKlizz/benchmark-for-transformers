@@ -68,7 +68,11 @@ def kendalltau(X, Y):
     new_Y = substitution(X, Y)
     nb_inv = get_nb_inv(new_Y)
     n = len(X)
+    assert len(Y) == n, (X, Y)
+    assert n != 0, (X, Y))
     binomial_coefficient = n * (n - 1) / 2
+    if binomial_coefficient == 0:
+        binomial_coefficient = 1
     tau = 1 - 2 * nb_inv / binomial_coefficient
 
     return tau
