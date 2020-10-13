@@ -16,7 +16,7 @@
         },
         {
             "name": "Bart Multi",
-            "model_class": "ordering",
+            "model_class": "ordering multi",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-multi-cnn-dm",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
@@ -30,7 +30,7 @@
         },
         {
             "name": "Bart Deep",
-            "model_class": "ordering",
+            "model_class": "ordering deep",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-deep-cnn-dm",
             "tokenizer_name": "facebook/bart-base",
             "init_kwargs": {
