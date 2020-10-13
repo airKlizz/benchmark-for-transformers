@@ -69,7 +69,7 @@ def kendalltau(X, Y):
     nb_inv = get_nb_inv(new_Y)
     n = len(X)
     assert len(Y) == n, (X, Y)
-    assert n != 0, (X, Y))
+    assert n != 0, (X, Y)
     binomial_coefficient = n * (n - 1) / 2
     if binomial_coefficient == 0:
         binomial_coefficient = 1
