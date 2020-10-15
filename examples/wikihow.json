@@ -44,7 +44,7 @@
         }
     ],
     "dataset": {
-        "dataset_name": "/data/experiments/rcalizzano/benchmark-for-transformers/examples/datasets/wikihow_ordering.py",
+        "dataset_name": "/data/experiments/rcalizzano/Ordering/dataset/wikihow_ordering.py",
         "split": "test",
         "x_column_name": ["shuffled_sentences"],
         "y_column_name": "label",
