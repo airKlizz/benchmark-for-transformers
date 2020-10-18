@@ -1,6 +1,19 @@
 {
     "scenarios": [
         {
+            "name": "Baseline",
+            "model_class": "ordering baseline",
+            "model_name": "/data/experiments/rcalizzano/Ordering/training/models/baseline-cnn-dailymail",
+            "tokenizer_name": "/data/experiments/rcalizzano/glove_tokenizer/cnn-dailymail",
+            "init_kwargs": {
+                "ordering_parameters": {
+                    "num_beams": 1
+                }
+            },
+            "batch_size": 16,
+            "device": "cuda"
+        },
+        {
             "name": "Bart Simple",
             "model_class": "ordering",
             "model_name": "/data/experiments/rcalizzano/Ordering/training/models/bart-base-simple-cnn-dm",
